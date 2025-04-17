@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Micromercado</title>
+  <style>
+body {
+  font-family: 'Arial', sans-serif;
+  background: #ffffff;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+header {
+  background-color: #e0e0e0;
+  width: 100%;
+  padding: 30px;
+  font-size: 70px;
+  font-weight: bold;
+  text-align: center;
+  position: absolute;
+  top: 0;
+}
+
+h1 {
+  font-family: 'Arial', cursive;
+  font-size: 60px;
+  margin: 0; 
+  text-align: start;
+  position: absolute;
+  top: 200px; 
+}
+
+.opciones {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  gap: 200px;
+  margin-top: 20px;
+}
+
+.opcion {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  text-align: center;
+  font-size: 30px;
+}
+
+.opcion img {
+  width: 300px;  /* Ajusta este valor según el tamaño que quieras */
+  object-fit: contain; /* Para evitar que la imagen se distorsione */
+  align-self: flex-end;
+}
+
+.opcion:hover {
+  transform: scale(1.5);
+}
+
+.texto {
+  font-weight: bold;
+  margin-top: 20px;
+  font-size: 1.6em;
+}
+  </style>
+</head>
+<body>
+  <header>MICROMERCADO la gran parada</header>
+  <h1>BIENVENIDO! ¿A DÓNDE DESEA ACCEDER?</h1>
+
+  <div class="opciones">
+    <div class="opcion" onclick="location.href='/consulta'">
+      <img src="{{ url_for('static', filename='imagen/inventario.jpg') }}" alt="Inventario">
+      <div class="texto">CONSULTAR PRECIOS</div>
+    </div>
+    <div class="opcion" onclick="location.href='/caja'">
+      <img src="{{ url_for('static', filename='imagen/caja.jpg') }}" alt="Caja">
+      <div class="texto">ACCEDER A LA CAJA</div>
+    </div>
+  </div>
+</body>
+</html>
