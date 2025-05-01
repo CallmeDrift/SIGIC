@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-
+# ESTE PROYECTO UTILIZA FLASK, EJECÚTALO CON EL COMANDO PYTHON app.py
 app = Flask(__name__)
 
 # Página principal
@@ -26,7 +26,7 @@ def registro():
 
 @app.route('/consulta')
 def inventario():
-    return '<h2>Aquí va la consulta 🚀</h2>'
+    return render_template('consulta.html')
 
 @app.route('/caja')
 def caja():
