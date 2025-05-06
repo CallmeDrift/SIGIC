@@ -4,89 +4,144 @@
   <meta charset="UTF-8">
   <title>Consulta de Productos</title>
   <style>
-body {
-  font-family: 'Arial', sans-serif;
-  background: #ffffff;
-  margin: 0;
-  padding: 0;
-}
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
 
-header {
-  background-color: #e0e0e0;
-  width: 100%;
-  padding: 40px;
-  font-size: 50px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+    header {
+      background-color: #e0e0e0;
+      width: 100%;
+      padding: 40px;
+      font-size: 50px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
 
-.ir-atras {
-  margin-left: 20px;
-  cursor: pointer;
-  font-size: 40px;
-}
+    .ir-atras {
+      margin-left: 20px;
+      cursor: pointer;
+      font-size: 40px;
+    }
 
-.titulo {
-  flex-grow: 1;
-  text-align: center;
-  margin-right: 60px;
-}
+    .titulo {
+      flex-grow: 1;
+      text-align: center;
+      margin-right: 60px;
+    }
 
-.contenido {
-  padding: 40px;
-}
+    .contenido {
+      padding: 40px;
+    }
 
-.barra-acciones {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 40px;
-  justify-content: flex-start;
-}
+    .barra-acciones {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 40px;
+      justify-content: flex-start;
+    }
 
+    .barra-acciones input[type="text"] {
+      padding: 12px 20px;
+      font-size: 30px;
+      width: 600px;
+      border: 2px solid #ccc;
+      border-radius: 20px;
+      background-color: #f2f2f2;
+      font-weight: bold;
+      color: #555;
+      margin-left: auto;
+    }
 
-.barra-acciones input[type="text"] {
-  padding: 12px 20px;
-  font-size: 30px;
-  width: 600px;
-  border: 2px solid #ccc;
-  border-radius: 20px;
-  background-color: #f2f2f2;
-  font-weight: bold;
-  color: #555;
-  margin-left: auto;
-}
+    .barra-acciones input::placeholder {
+      color: #888;
+      text-align: center;
+    }
 
-.barra-acciones input::placeholder {
-  color: #888;
-  text-align: center;
-}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 25px;
+    }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 25px;
-}
+    th, td {
+      border-bottom: 1px solid #ddd;
+      padding: 20px;
+      text-align: left;
+    }
 
-th, td {
-  border-bottom: 1px solid #ddd;
-  padding: 20px;
-  text-align: left;
-}
+    th {
+      text-transform: uppercase;
+      font-weight: bold;
+      background-color: #fff;
+      border-bottom: 2px solid #000;
+    }
 
-th {
-  text-transform: uppercase;
-  font-weight: bold;
-  background-color: #fff;
-  border-bottom: 2px solid #000;
-}
+    tr:hover {
+      background-color: #f9f9f9;
+      cursor: pointer;
+    }
 
-tr:hover {
-  background-color: #f9f9f9;
-}
+    /* Modal estilos */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      padding-top: 100px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
+    }
+
+    .modal-contenido {
+      background-color: #fff;
+      margin: auto;
+      padding: 30px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 900px;
+      border-radius: 10px;
+    }
+
+    .cerrar {
+      color: #aaa;
+      float: right;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .modal-info {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+
+    .modal-info img {
+      width: 300px;
+      height: auto;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .detalles p {
+      font-size: 20px;
+      margin: 8px 0;
+    }
+
+    .detalles h2 {
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
   </style>
 </head>
 <body>
@@ -96,12 +151,11 @@ tr:hover {
   </header>
 
   <div class="contenido">
-
     <div class="barra-acciones">
       <input type="text" placeholder="🔎BUSCAR PRODUCTO">
     </div>
 
-    <table>
+    <table id="tabla-productos">
       <thead>
         <tr>
           <th>Nombre</th>
@@ -111,39 +165,88 @@ tr:hover {
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr data-nombre="YOGURT GRIEGO X500ML" data-categoria="LÁCTEOS" data-precio-compra="3500" data-precio-venta="5000"
+          data-desc="Yogurt natural bajo en grasa. Ideal para desayunos." data-pre="Botella 500ml" data-ubi="Nevera 1"
+          data-stock="4" data-proveedor="101" data-img="yogurt_500ml.png">
           <td>YOGURT GRIEGO X500ML</td>
-          <td>LACTEOS</td>
+          <td>LÁCTEOS</td>
           <td>$5000</td>
           <td>4</td>
         </tr>
-        <tr>
-          <td>DETODITO Surtidos x6und</td>
+        <tr data-nombre="DORITOS NACHO X200G" 
+          data-categoria="PAQUETES" 
+          data-precio="$7500" 
+          data-stock="20"
+          data-desc="Doritos sabor nacho intensamente crocantes." 
+          data-precio-compra="5200" 
+          data-precio-venta="7500"
+          data-pre="Bolsa x200g" 
+          data-ubi="Estantería 3" 
+          data-prov="PR123"
+          data-img="imagen/Doritos_200gr.png">
+          <td>DORITOS NACHO X200G</td>
           <td>PAQUETES</td>
-          <td>$14000</td>
-          <td>12</td>
+          <td>$7500</td>
+          <td>20</td>
         </tr>
-        <tr>
-          <td>Manzana Roja Paquete 750G</td>
+        
+        <tr data-nombre="CEBOLLA LARGA X500G" data-categoria="FRUTAS Y VERDURAS" data-precio="$2500" data-stock="30"
+          data-desc="Fresca y lista para tus guisos. 100% natural." data-precio-compra="1500" data-precio-venta="2500"
+          data-pre="Manojo x500g" data-ubi="Estantería 1" data-prov="AG456"
+          data-img="CebollaLarga.png">
+          <td>CEBOLLA LARGA X500G</td>
           <td>FRUTAS Y VERDURAS</td>
-          <td>$3000</td>
-          <td>0</td>
+          <td>$2500</td>
+          <td>30</td>
         </tr>
-        <tr>
-            <td>Cebolla larga</td>
-            <td>FRUTAS Y VERDURAS</td>
-            <td>$4000</td>
-            <td>6</td>
-          </tr>
-          <tr>
-            <td>YOGURT fresa x200ML</td>
-            <td>LACTEOS</td>
-            <td>$2000</td>
-            <td>5</td>
-          </tr>
-      </tbody>
-    </table>
+        
+        <!-- Más productos aquí -->
+        </tbody>
+        </table>
+        </div>
 
+  <!-- MODAL -->
+  <div id="modalProducto" class="modal">
+    <div class="modal-contenido">
+      <span class="cerrar" onclick="cerrarModal()">&times;</span>
+      <div class="modal-info">
+        <img id="producto-imagen" src="" alt="Foto del producto">
+        <div class="detalles">
+          <h2 id="producto-nombre">NOMBRE PRODUCTO</h2>
+          <p><strong>Precio compra:</strong> $<span id="producto-compra"></span></p>
+          <p><strong>Precio venta:</strong> $<span id="producto-venta"></span></p>
+          <p><strong>Descripción:</strong> <span id="producto-desc"></span></p>
+          <p><strong>Presentación:</strong> <span id="producto-pre"></span></p>
+          <p><strong>Ubicación:</strong> <span id="producto-ubi"></span></p>
+          <p><strong>Stock:</strong> <span id="producto-stock"></span></p>
+          <p><strong>ID Proveedor:</strong> <span id="producto-prov"></span></p>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <script>
+    const filas = document.querySelectorAll("#tabla-productos tbody tr");
+
+    filas.forEach(fila => {
+      fila.addEventListener("click", () => {
+        document.getElementById('producto-nombre').textContent = fila.dataset.nombre;
+        document.getElementById('producto-compra').textContent = fila.dataset.precioCompra;
+        document.getElementById('producto-venta').textContent = fila.dataset.precioVenta;
+        document.getElementById('producto-desc').textContent = fila.dataset.desc;
+        document.getElementById('producto-pre').textContent = fila.dataset.pre;
+        document.getElementById('producto-ubi').textContent = fila.dataset.ubi;
+        document.getElementById('producto-stock').textContent = fila.dataset.stock;
+        document.getElementById('producto-prov').textContent = fila.dataset.proveedor;
+        document.getElementById('producto-imagen').src = fila.dataset.img || 'https://via.placeholder.com/300x300?text=Producto';
+
+        document.getElementById('modalProducto').style.display = 'block';
+      });
+    });
+
+    function cerrarModal() {
+      document.getElementById('modalProducto').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
