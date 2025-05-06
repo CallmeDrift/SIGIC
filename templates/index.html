@@ -32,15 +32,42 @@ h1 {
   margin: 0; 
   text-align: start;
   position: absolute;
-  top: 200px; 
+  top: 250px; 
 }
+
+.navbar-secundaria {
+  width: 100%;
+  background-color: #bebebe;
+  padding: 5px 10px;
+  text-align: right;
+  position: absolute;
+  top: 140px; 
+}
+
+.navbar-secundaria button {
+  padding: 10px ;
+  background-color: #bebebe;
+  color: #000;
+  border: none;
+  border-radius: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+ 
+}
+
+.navbar-secundaria button:hover {
+  background-color: #949494;
+}
+
 
 .opciones {
   display: flex;
   justify-content: center;
   align-items: end;
   gap: 200px;
-  margin-top: 20px;
+  margin-top: 100px;
 }
 
 .opcion {
@@ -69,8 +96,10 @@ h1 {
 </head>
 <body>
   <header>MICROMERCADO LA GRAN PARADA</header>
+  <div class="navbar-secundaria">
+    <button onclick="location.href='/login'">Administrador</button>
+  </div>  
   <h1>BIENVENIDO! ¿A DÓNDE DESEA ACCEDER?</h1>
-
   <div class="opciones">
     <div class="opcion" onclick="location.href='/consulta'">
       <img src="{{ url_for('static', filename='imagen/inventario.jpg') }}" alt="Inventario">

@@ -16,6 +16,10 @@ def admin():
 def cabecera():
     return render_template('cabecera.html')
 
+@app.route('/login')
+def login():
+    return render_template('LoginAdmin.html')
+
 @app.route('/comunicados')
 def comunicados():
     return render_template('comunicados.html')

@@ -1,144 +1,79 @@
 <!DOCTYPE html>
-<html lang= "es">
-    <head>
-        <meta charset="uft-8">
-        <title> SIRI </title>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - SIGIC</title>
+  <style>
+body {
+  font-family: 'Arial', sans-serif;
+  background: #ffffff;
+  margin: 0;
+  padding: 0;
+}
 
-        <!-- BOOTSTRAP 4 -->
+header {
+  background-color: #e0e0e0;
+  padding: 30px;
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 2px solid #ccc;
+}
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-            integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+.ir-atras {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  font-size: 35px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  color: #000;
+}
 
-        <!--CSS PERSONALIZADO -->
-        <link rel="stylesheet" type="text/css " href= "{{ url_for('static', filename= 'css/main.css') }}"> 
-    </head>
- <!--inicio cabecero-->   
- <style>
-    body {
-          background-image:url("/static/imagen/imagen 3.webp");
-          background-size: cover;
-    }
-</style>
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 60px auto;
+  gap: 30px;
+}
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-  
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto"></ul>
-            <form class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-          </div>
-        </nav>
+.card {
+  width: 250px;
+  height: 150px;
+  background-color: #f4f4f4;
+  border-radius: 20px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
 
+.card:hover {
+  background-color: #55ccff;
+  transform: scale(1.05);
+}
+  </style>
+</head>
+<body>
+  <header>PANEL DE ADMINISTRACIÓN</header>
+  <div class="ir-atras" onclick="location.href='/'">← SALIR</div>
 
-        <div class="right">
-           <h1><b></b>S-I-R-I"</b></h1> 
-        </div>
-
-        <div>
-           <img src="/static/imagen/logo.png">
-        </div>
-    
-        <div class="centrado p-4" class="imagen 2"> 
-            <img src="/static/imagen/conjunto.png">
-        </div>
-
-        <div><p class="centrado" style="background-color: rgb(0, 1, 7); color: rgb(235, 220, 15);">
-            <em><strong> <sup>CONJUNTO RESIDENCIAL</sup>  "RONDA 3"</em> </p></div></strong>
-   <!--fin cabecero--> 
-
-    <!--inicio barra menu-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" style="color: crimson;" href="https://www.bible.com/es/verse-of-the-day">"ORACION DEL DIA" </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto"  >
-
-                   
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="/visitantes">VISITANTES</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/vehiculos">VEHICULOS </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/comunicados">COMUNICADOS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/consulta">CONSULTAS </a>
-                    </li>
-
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">SALIR <span class="sr-only">(current)</span></a>
-                    </li>
-                   
-                </ul>
-            </div>
-        </nav> 
-     
-    <!--fin barra menu--> 
-    <!--inicio frase ingreso -->   
-        <style>
-            .caja{
-                background-color: rgb(178, 209, 223);
-               
-                margin: 5%;
-                margin-left: 10%;
-                margin-right: 10%;
-            }
-        </style>
-
-        <div><p class="centrado"  color: aliceblue;>
-            <em><strong> "BIENVENIDOS"  modulo de registro visitantes  </em> </p></strong>
-        </div>
-        <div class="centrado" style="background-color: rgb(0, 1, 7); color: rgb(235, 220, 15);" >
-            <h1>______________________________________________________________________________</h1>
-        </div>
-
-        <div p class="centrado"  color: aliceblue;> 
-            <h1><strong><em>ORDENES PERMANENTES</em></strong> </h1>
-            <h1>__________________________________________</h1>
-            <h3>1.<strong> NO</strong> se permite ingreso de domiciliarios en moto, ni con elementos que cubran su cabeza.  </h3>
-            <h3>2. Todo visitante debe ser <strong> anunciado y registrado</strong>  en libro de minuta.   </h3>
-            <h3>3.<strong>NO</strong>  se permite ingreso de vehiculos de visitantes  que no tengan sitio para parquear.  </h3>
-            <h3>4. Esta rotundamente <strong> prohibido </strong> parquear sobre las vias  </h3>
-            <h3>5. trabajos que generen ruidos solo se permiten en horario de lunes a viernes de <em><strong> "8am a 5pm y sabados de 8 am a 2pm"</strong> </em>
-                domingos y dia festivos esta prohibido.   </h3>
-        </div>
-
-        <div class="caja"><p class="centrado"  color: aliceblue;>                
-                <em><strong> <sup>"EMPIEZA TU DIA" </sup> tu trabajo es importante para nosotros   </em> </p></strong> 
-        </div> 
-        
-       
-    <!--fin frase ingreso-->
-
-    <!--inicio bloque de cierre -->
-    <h1>_____________________________________________________________________________________</h1>
-
-
-    <div class="centrado"><p style="background-color: rgb(0, 1, 7)">
-        <em><strong> <sup><h5>conjunto residencial </h5></sup>  "RONDA 3"</em> </p>
-        <h6>floridablanca - Santander </h6>
-      <nav class="centrado ">
-            <a style="color: rgb(15, 15, 15);" href="https://mail.google.com/mail/u/0/#inbox"> <H6><strong>conjunto.ronda3@gmail.com</strong></H6>  </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-      </nav>
-      <h6  class="centrado">copyright ©</h6>
-    </div>
-    
-    
-    <!--fin bloque de cierre -->
-    </body>
+  <div class="container">
+    <div class="card">📦 GESTIONAR PRODUCTO</div> 
+    <div class="card">💰 GESTIONAR PROOVEDORES</div>
+    <div class="card">👤 FACTURAS</div>
+    <div class="card">📊 GESTIONAR CLIENTES</div>
+    <div class="card">📊 GESTIONAR ADMINISTRADOR</div>
+  </div>
+</body>
+</html>
+ 
