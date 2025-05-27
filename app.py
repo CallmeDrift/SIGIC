@@ -8,6 +8,10 @@ def index():
     return render_template('index.html')
 
 # Rutas para cada sección 
+@app.route('/main')
+def main():
+    return render_template('main.html')
+
 @app.route('/admin')
 def admin():
     return render_template('admin.html')

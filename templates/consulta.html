@@ -12,7 +12,7 @@
     }
 
     header {
-      background-color: #e0e0e0;
+      background-color: #4a90f8;
       width: 100%;
       padding: 40px;
       font-size: 50px;
@@ -120,6 +120,19 @@
       cursor: pointer;
     }
 
+      .marca-de-agua {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 500px;
+      font-weight: bold;
+      color: #000000;
+      opacity: 3%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+    }
+
     .modal-info {
       display: flex;
       gap: 30px;
@@ -146,11 +159,12 @@
 </head>
 <body>
   <header>
-    <div class="ir-atras" onclick="location.href='/'">← IR ATRÁS</div>
+    <div class="ir-atras" onclick="location.href='/main'">← IR ATRÁS</div>
     <div class="titulo">CONSULTA DE PRECIOS</div>
   </header>
 
   <div class="contenido">
+    <div class="marca-de-agua">SIGIC</div>
     <div class="barra-acciones">
       <input type="text" placeholder="🔎BUSCAR PRODUCTO">
     </div>
@@ -167,7 +181,7 @@
       <tbody>
         <tr data-nombre="YOGURT GRIEGO X500ML" data-categoria="LÁCTEOS" data-precio-compra="3500" data-precio-venta="5000"
           data-desc="Yogurt natural bajo en grasa. Ideal para desayunos." data-pre="Botella 500ml" data-ubi="Nevera 1"
-          data-stock="4" data-proveedor="101" data-img="yogurt_500ml.png">
+          data-stock="4" data-proveedor="101" data-img="{{ url_for('static', filename='imagen/yogurt_500ml.png') }}">
           <td>YOGURT GRIEGO X500ML</td>
           <td>LÁCTEOS</td>
           <td>$5000</td>
@@ -183,7 +197,7 @@
           data-pre="Bolsa x200g" 
           data-ubi="Estantería 3" 
           data-prov="PR123"
-          data-img="imagen/Doritos_200gr.png">
+          data-img="{{ url_for('static', filename='imagen/Doritos_200gr.png') }}">
           <td>DORITOS NACHO X200G</td>
           <td>PAQUETES</td>
           <td>$7500</td>
@@ -193,7 +207,7 @@
         <tr data-nombre="CEBOLLA LARGA X500G" data-categoria="FRUTAS Y VERDURAS" data-precio="$2500" data-stock="30"
           data-desc="Fresca y lista para tus guisos. 100% natural." data-precio-compra="1500" data-precio-venta="2500"
           data-pre="Manojo x500g" data-ubi="Estantería 1" data-prov="AG456"
-          data-img="CebollaLarga.png">
+          data-img="{{ url_for('static', filename='imagen/cebollaLarga.png') }}">
           <td>CEBOLLA LARGA X500G</td>
           <td>FRUTAS Y VERDURAS</td>
           <td>$2500</td>

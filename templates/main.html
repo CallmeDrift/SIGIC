@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Micromercado</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #4a90e2;
+      color: #000;
+      width: 100%;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-style: italic;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      width: 100px;
+      height: auto;
+    }
+
+    .logo span {
+      font-size: 40px;
+      font-weight: bold;
+    }
+
+    .navbar-secundaria {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .navbar-secundaria button {
+      padding: 8px 16px;
+      background-color: transparent;
+      color: #000;
+      border: none;
+      border-radius: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .navbar-secundaria button:hover {
+      background-color: #ffffff50;
+    }
+
+    .contenido {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 60px 20px 100px;
+    }
+
+    .marca-de-agua {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 500px;
+      font-weight: bold;
+      color: #000000;
+      opacity: 3%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    h1 {
+      font-size: 70px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+.opciones {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 200px;
+  margin-top: auto; 
+  margin-bottom: 80px; 
+}
+
+    .opcion {
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+
+    }
+
+    .opcion img {
+      width: 400px;
+      height: auto;
+    }
+
+    .opcion:hover {
+      transform: scale(1.1);
+    }
+
+    .texto {
+     font-size: 40px;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #000;
+      text-shadow: 1px 1px 2px #888;
+    }
+
+    footer {
+      background-color: #4a90e2;
+      color: #000000;
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='imagen/logo.png') }}" alt="Logo">
+      <span>MICROMERCADO<br>La Gran Parada</span>
+    </div>
+    <div class="navbar-secundaria">
+      <button onclick="location.href='/login'">Administrador</button>
+      <button>Ayuda</button>
+      <button onclick="location.href='/'">Atrás</button>
+    </div>
+  </header>
+
+  <div class="contenido">    
+    <h1>Elige dónde entrar</h1>
+    <div class="opciones">
+      <div class="opcion" onclick="location.href='/consulta'">
+        <img src="{{ url_for('static', filename='imagen/inventario.jpg') }}" alt="Inventario">
+        <div class="texto">Acceder a Inventario</div>
+      </div>
+      <div class="opcion" onclick="location.href='/caja'">
+        <img src="{{ url_for('static', filename='imagen/caja.jpg') }}" alt="Caja">
+        <div class="texto">Acceder a Caja</div>
+        <div class="marca-de-agua">SIGIC</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Micromercado La gran parada <br> Calle 19d #19-68 Giron, Santander <br> lagranparada@gmail.com <br> ©Copyright J.S.soluciones tecnologicas
+  </footer>
+</body>
+</html>
