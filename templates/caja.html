@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Caja Registradora - SIGIC</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      min-height: 100vh;
+      justify-content: flex-start;
+    }
+
+    .encabezado {
+      background-color: #4A90F8;
+      color: black;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      font-size: 50px;
+      font-weight: bold;
+    }
+
+    .input-codigo {
+      margin: 30px 0 20px;
+      padding: 15px;
+      font-size: 30px;
+      border-radius: 10px;
+      background-color: #e9e9e9;
+      width: 80%;
+      max-width: 600px;
+      text-align: center;
+      font-weight: bold;
+
+    }
+
+    table {
+      width: 90%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      font-size: 25px;
+    }
+
+    th, td {
+      border-bottom: 1px solid #000;
+      padding: 12px;
+    }
+
+    th {
+      background-color: white;
+      font-weight: bold;
+    }
+
+    .total-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-top: 1px solid #000;
+      margin-bottom: 20%;
+      margin-top: 18%;
+      gap : 250px;
+      padding: 20px;
+      width: 90%;
+      font-size: 40px;
+      font-weight: italic;
+    }
+
+    .confirmar {
+      background-color: #EFCF7F;
+      padding: 10px 25px;
+      border-radius: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .confirmar:hover {
+      opacity: 0.7;
+    }
+
+    .instruccion {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .btn-atras {
+      background: none;
+      border: none;
+      color: black;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="encabezado">
+    <button onclick="location.href='/main'" class="btn-atras">← IR ATRÁS</button>
+    <span>CAJA REGISTRADORA</span>
+    <span></span>
+  </div>
+
+  <div class="instruccion">INGRESE EL CÓDIGO DEL PRODUCTO O ESCANÉELO</div>
+  <input type="text" placeholder="CÓDIGO O NOMBRE DEL PRODUCTO" class="input-codigo">
+
+  <table>
+    <thead>
+      <tr>
+        <th>NOMBRE</th>
+        <th>VALOR X UND/LB</th>
+        <th>CANTIDAD</th>
+        <th>VALOR TOTAL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>YOGURT GRIEGO X500ML</td>
+        <td>$5000</td>
+        <td>4</td>
+        <td>$20000</td>
+      </tr>
+      <tr>
+        <td>PAN BIMBO TAJADO GRANDE</td>
+        <td>$5560</td>
+        <td>2</td>
+        <td>$11120</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="total-section">
+    <span>TOTAL: $31120</span>
+    <button class="confirmar">CONFIRMAR COMPRA</button>
+  </div>
+</body>
+</html>
