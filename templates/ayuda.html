@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ayuda - SIGIC</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    .encabezado {
+      background: linear-gradient(to right, #4A90F8, #7EA6E0); 
+      color: black;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      font-size: 50px;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .btn-atras {
+      background: none;
+      border: none;
+      color: black;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .contenido {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 30px;
+    }
+
+    video {
+      max-width: 90%;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="encabezado">
+    <button onclick="location.href='/main'" class="btn-atras">← IR ATRÁS</button>
+    <span>AYUDA</span>
+    <span></span>
+  </div>
+
+  <div class="contenido">
+    <video controls autoplay loop>
+      <source src="{{ url_for('static', filename='imagen/Kirby Bopping.mp4') }}" type="video/mp4">
+      Tu navegador no soporta el video 😥
+    </video>
+  </div>
+</body>
+</html>

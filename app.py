@@ -36,6 +36,13 @@ def caja():
 def inventario():
     return render_template('consulta.html')
 
+@app.route('/ayuda')
+def ayuda():
+    return render_template('ayuda.html')
+
+@app.route('/gestionproductos')
+def gestionproductos():
+    return render_template('gestionproductos.html')
 
 
 if __name__ == '__main__':
