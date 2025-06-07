@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Proveedores - SIGIC</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .encabezado {
+      position: relative;
+      background-color: #4A90F8;
+      color: black;
+      width: 100%;
+      height: 80px;
+      display: flex;
+      align-items: center;
+    }
+
+    .titulo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 40px;
+      font-weight: bold;
+    }
+
+    .btn-atras {
+      margin-left: 30px;
+      background: none;
+      border: none;
+      color: black;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    form {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 90%;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      width: 80%;
+      max-width: 800px;
+      margin-bottom: 30px;
+    }
+
+    input {
+      font-size: 20px;
+      padding: 15px 20px;
+      border-radius: 10px;
+      border: none;
+      background-color: #d9d9d9;
+      font-weight: bold;
+      color: gray;
+    }
+
+    .submit-btn {
+      background-color: #77E28C;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 25px;
+      font-size: 25px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="encabezado">
+    <button onclick="location.href='/gestionproveedores'" class="btn-atras">← IR ATRÁS</button>
+    <span class="titulo">EDITAR PROVEEDORES</span>
+  </div>
+
+  <form>
+    <div class="form-grid">
+      <input type="text" placeholder="NOMBRES" required>
+      <input type="text" placeholder="APELLIDOS" required>
+      <input type="text" placeholder="EMPRESA" required>
+      <input type="tel" placeholder="TELEFONO EMPRESA" required>
+      <input type="email" placeholder="CORREO ELECTRONICO" required>
+      <input type="tel" placeholder="TELEFONO 2">
+    </div>
+
+    <button type="submit" class="submit-btn">EDITAR PROVEEDOR</button>
+  </form>
+</body>
+
+</html>

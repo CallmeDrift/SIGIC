@@ -44,6 +44,37 @@ def ayuda():
 def gestionproductos():
     return render_template('gestionproductos.html')
 
+@app.route('/agregarproducto')
+def agregarproducto():
+    return render_template('AgregarProducto.html')
+
+@app.route('/editarproducto')
+def editarproducto():
+    return render_template('EditarProducto.html')
+
+@app.route('/gestionproveedores')
+def gestionproveedores():
+    return render_template('gestionproveedores.html')
+
+@app.route('/agregarproveedor')
+def agregarproveedor(): 
+    return render_template('AgregarProveedor.html')
+
+@app.route('/editarproveedor')
+def editarproveedor():
+    return render_template('EditarProveedor.html')
+
+@app.route('/gestionclientes')
+def gestionclientes():
+    return render_template('gestionClientes.html')
+
+@app.route('/agregarcliente')
+def agregarcliente():
+    return render_template('AgregarCliente.html')
+
+@app.route('/editarcliente')
+def editarcliente():
+    return render_template('EditarCliente.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

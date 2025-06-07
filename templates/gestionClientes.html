@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestionar Clientes - SIGIC</title>
+  <style>
+    body{
+      margin:0;
+      font-family:'Inter',sans-serif;
+      background:white;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      min-height:100vh;
+    }
+    /*── Header ───────────────────────────*/
+    .encabezado{
+      position:relative;
+      background:#4A90F8;
+      color:black;
+      width:100%;
+      height:80px;
+      display:flex;
+      align-items:center;
+    }
+    .titulo{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      font-size:40px;
+      font-weight:bold;
+    }
+    .btn-atras{
+      margin-left:30px;
+      background:none;
+      border:none;
+      color:black;
+      font-size:30px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+    /*── Barra de acciones ────────────────*/
+    .acciones{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      width:90%;
+      margin:30px 0 10px;
+    }
+    .agregar-btn{
+      background:#77E28C;
+      border:none;
+      border-radius:20px;
+      padding:10px 25px;
+      font-size:30px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+    .buscar-input{
+      font-size:20px;
+      padding:10px 20px;
+      border-radius:25px;
+      border:1px solid #ccc;
+      background:#f0f0f0;
+      width:300px;
+      text-align:center;
+      font-weight:bold;
+      color:gray;
+    }
+    /*── Tabla ────────────────────────────*/
+    table{
+      width:90%;
+      border-collapse:collapse;
+      font-size:22px;
+      margin-top:20px;
+    }
+    th,td{
+      padding:15px 10px;
+      border-bottom:1px solid #000;
+      text-align:left;
+    }
+    th{font-weight:bold;}
+    .acciones-cliente{
+      display:flex;
+      gap:10px;
+    }
+    .editar-btn{
+      background:#FFD966;
+      border:none;
+      border-radius:10px;
+      padding:5px 15px;
+      font-size:25px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+    .eliminar-btn{
+      background:#E74C3C;
+      border:none;
+      border-radius:10px;
+      padding:5px 15px;
+      font-size:25px;
+      color:#fff;
+      font-weight:bold;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="encabezado">
+    <button onclick="location.href='/admin'" class="btn-atras">← IR ATRÁS</button>
+    <span class="titulo">GESTIONAR CLIENTES</span>
+  </div>
+
+  <!-- Barra de acciones -->
+  <div class="acciones">
+    <button onclick="location.href='/agregarcliente'" class="agregar-btn">AGREGAR CLIENTE</button>
+    <input type="text" placeholder="🔍BUSCAR CLIENTE" class="buscar-input">
+  </div>
+
+  <!-- Tabla de clientes -->
+  <table>
+    <thead>
+      <tr>
+        <th>NOMBRE</th>
+        <th>DNI</th>
+        <th>CONTACTO</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Ana Pérez</td>
+        <td>12345678</td>
+        <td>3001234567</td>
+        <td class="acciones-cliente">
+          <button class="editar-btn" onclick="location.href='/editarcliente'">EDITAR</button>
+          <button class="eliminar-btn">ELIMINAR</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Juan Ortega</td>
+        <td>98765432</td>
+        <td>3109876543</td>
+        <td class="acciones-cliente">
+          <button class="editar-btn" onclick="location.href='/editarcliente'">EDITAR</button>
+          <button class="eliminar-btn">ELIMINAR</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
