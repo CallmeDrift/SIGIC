@@ -70,11 +70,11 @@ def gestionclientes():
 
 @app.route('/agregarcliente')
 def agregarcliente():
-    return render_template('AgregarCliente.html')
+    return render_template('AgregarClientes.html')
 
 @app.route('/editarcliente')
 def editarcliente():
-    return render_template('EditarCliente.html')
+    return render_template('EditarClientes.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
