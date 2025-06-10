@@ -179,45 +179,27 @@
         </tr>
       </thead>
       <tbody>
-        <tr data-nombre="YOGURT GRIEGO X500ML" data-categoria="LÁCTEOS" data-precio-compra="3500" data-precio-venta="5000"
-          data-desc="Yogurt natural bajo en grasa. Ideal para desayunos." data-pre="Botella 500ml" data-ubi="Nevera 1"
-          data-stock="4" data-proveedor="101" data-img="{{ url_for('static', filename='imagen/yogurt_500ml.png') }}">
-          <td>YOGURT GRIEGO X500ML</td>
-          <td>LÁCTEOS</td>
-          <td>$5000</td>
-          <td>4</td>
+        {% for producto in productos %}
+        <tr 
+          data-nombre="{{ producto.nombre_producto }}"
+          data-categoria="{{ producto.categoria }}"
+          data-precio-compra="{{ producto.precio_compra }}"
+          data-precio-venta="{{ producto.precio_venta }}"
+          data-desc="{{ producto.descripcion }}"
+          data-pre="{{ producto.presentacion }}"
+          data-ubi="{{ producto.ubicacion }}"
+          data-stock="{{ producto.cantidad }}"
+          data-proveedor="{{ producto.id_proveedor }}"
+          data-img="{{ url_for('static', filename='imagen/' ~ producto.imagen) }}">
+          <td>{{ producto.nombre_producto }}</td>
+          <td>{{ producto.categoria }}</td>
+          <td>${{ producto.precio_venta }}</td>
+          <td>{{ producto.cantidad }}</td>
         </tr>
-        <tr data-nombre="DORITOS NACHO X200G" 
-          data-categoria="PAQUETES" 
-          data-precio="$7500" 
-          data-stock="20"
-          data-desc="Doritos sabor nacho intensamente crocantes." 
-          data-precio-compra="5200" 
-          data-precio-venta="7500"
-          data-pre="Bolsa x200g" 
-          data-ubi="Estantería 3" 
-          data-prov="PR123"
-          data-img="{{ url_for('static', filename='imagen/Doritos_200gr.png') }}">
-          <td>DORITOS NACHO X200G</td>
-          <td>PAQUETES</td>
-          <td>$7500</td>
-          <td>20</td>
-        </tr>
-        
-        <tr data-nombre="CEBOLLA LARGA X500G" data-categoria="FRUTAS Y VERDURAS" data-precio="$2500" data-stock="30"
-          data-desc="Fresca y lista para tus guisos. 100% natural." data-precio-compra="1500" data-precio-venta="2500"
-          data-pre="Manojo x500g" data-ubi="Estantería 1" data-prov="AG456"
-          data-img="{{ url_for('static', filename='imagen/cebollaLarga.png') }}">
-          <td>CEBOLLA LARGA X500G</td>
-          <td>FRUTAS Y VERDURAS</td>
-          <td>$2500</td>
-          <td>30</td>
-        </tr>
-        
-        <!-- Más productos aquí -->
-        </tbody>
-        </table>
-        </div>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
   <!-- MODAL -->
   <div id="modalProducto" class="modal">
@@ -253,7 +235,6 @@
         document.getElementById('producto-stock').textContent = fila.dataset.stock;
         document.getElementById('producto-prov').textContent = fila.dataset.proveedor;
         document.getElementById('producto-imagen').src = fila.dataset.img || 'https://via.placeholder.com/300x300?text=Producto';
-
         document.getElementById('modalProducto').style.display = 'block';
       });
     });
@@ -261,6 +242,24 @@
     function cerrarModal() {
       document.getElementById('modalProducto').style.display = 'none';
     }
+
+      // Buscador tiempo real
+  const inputBusqueda = document.querySelector('.barra-acciones input');
+
+  inputBusqueda.addEventListener('input', () => {
+    const filtro = inputBusqueda.value.toLowerCase();
+
+    filas.forEach(fila => {
+      const nombre = fila.dataset.nombre.toLowerCase();
+      const categoria = fila.dataset.categoria.toLowerCase();
+
+      if (nombre.includes(filtro) || categoria.includes(filtro)) {
+        fila.style.display = '';
+      } else {
+        fila.style.display = 'none';
+      }
+    });
+  });
   </script>
 </body>
 </html>

@@ -1,6 +1,9 @@
 from flask import Flask, render_template
+from database import get_connection
+
 # ESTE PROYECTO UTILIZA FLASK, EJECÚTALO CON EL COMANDO PYTHON app.py
 app = Flask(__name__)
+
 
 # Página principal
 @app.route('/')
@@ -34,7 +37,12 @@ def caja():
 
 @app.route('/consulta')
 def inventario():
-    return render_template('consulta.html')
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM productos")  # Ajusta según columnas reales
+    productos = cursor.fetchall()
+    conn.close()
+    return render_template('consulta.html', productos=productos)
 
 @app.route('/ayuda')
 def ayuda():
