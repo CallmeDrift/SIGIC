@@ -1,8 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, flash, session
 from database import get_connection
 
 # ESTE PROYECTO UTILIZA FLASK, EJECÚTALO CON EL COMANDO PYTHON app.py
 app = Flask(__name__)
+app.secret_key = 'Clave.77'  # Debo recordar cambiar esta clave por una más segura en producción
 
 
 # Página principal
@@ -23,9 +24,26 @@ def admin():
 def cabecera():
     return render_template('cabecera.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        usuario = request.form['usuario']
+        contraseña = request.form['contraseña']
+
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM usuarios WHERE nombre_usuario = %s", (usuario,))
+        user = cursor.fetchone()
+        conn.close()
+
+        if user and user['contraseña'] == contraseña:
+            session['usuario'] = user['nombre_usuario']
+            return redirect('/admin')
+        else:
+            return render_template('LoginAdmin.html', error="Usuario o contraseña incorrectos 😓")
+
     return render_template('LoginAdmin.html')
+
 
 @app.route('/comunicados')
 def comunicados():
