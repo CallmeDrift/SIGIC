@@ -68,7 +68,12 @@ def ayuda():
 
 @app.route('/gestionproductos')
 def gestionproductos():
-    return render_template('gestionproductos.html')
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT id, nombre_producto, precio_venta, cantidad FROM productos")
+    productos = cursor.fetchall()
+    conn.close()
+    return render_template('gestionproductos.html', productos=productos)
 
 @app.route('/agregarproducto')
 def agregarproducto():

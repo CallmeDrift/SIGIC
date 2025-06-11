@@ -43,7 +43,6 @@
             cursor: pointer;
         }
 
-
         .acciones {
             display: flex;
             justify-content: space-between;
@@ -126,7 +125,6 @@
         <span class="titulo">GESTIONAR PRODUCTOS</span>
     </div>
 
-
     <div class="acciones">
         <button onclick="location.href='/agregarproducto'" class="agregar-btn">AGREGAR PRODUCTO</button>
         <input type="text" placeholder="🔍BUSCAR PRODUCTO" class="buscar-input">
@@ -142,33 +140,19 @@
             </tr>
         </thead>
         <tbody>
+            {% for producto in productos %}
             <tr>
-                <td>YOGURT GRIEGO X500ML</td>
-                <td>$3500</td>
-                <td>10 uni</td>
+                <td>{{ producto.nombre_producto }}</td>
+                <td>${{ producto.precio_venta }}</td>
+                <td>{{ producto.cantidad }} uni</td>
                 <td class="acciones-producto">
-                    <button class="editar-btn" onclick="location.href='/editarproducto'">EDITAR</button> 
-                    <button class="eliminar-btn">ELIMINAR</button>
+                    <button class="editar-btn"
+                        onclick="location.href='/editarproducto/{{ producto.id }}'">EDITAR</button>
+                    <button class="eliminar-btn"
+                        onclick="location.href='/eliminarproducto/{{ producto.id }}'">ELIMINAR</button>
                 </td>
             </tr>
-            <tr>
-                <td>DETODO Surtidos 250g</td>
-                <td>$2800</td>
-                <td>10 uni</td>
-                <td class="acciones-producto">
-                    <button class="editar-btn" onclick="location.href='/editarproducto'">EDITAR</button> 
-                    <button class="eliminar-btn">ELIMINAR</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Manzana Roja Paquete 750G</td>
-                <td>$10000</td>
-                <td>10 uni</td>
-                <td class="acciones-producto">
-                    <button class="editar-btn" onclick="location.href='/editarproducto'">EDITAR</button> 
-                    <button class="eliminar-btn">ELIMINAR</button>
-                </td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </body>

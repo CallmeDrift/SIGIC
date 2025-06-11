@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Agregar Producto - SIGIC</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-      background: white;
-    }
+<style>
+  body{
+    margin:0;
+    font-family:'Arial',sans-serif;
+    background:#ffffff;
+    font-size:120%;
+    margin-bottom: 20px; 
+  }
 
     header {
       background-color: #4A90F8;
@@ -32,59 +34,60 @@
       cursor: pointer;
     }
 
-    form {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 40px;
-      padding: 50px 20px;
-    }
+  /* wrapper para centrar y dar aire */
+  .form-wrapper{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-top:60px;
+  }
 
-    .form-col {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      min-width: 300px;
-    }
+  form{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:60px;                    /* más aire entre columnas */
+    padding:60px 30px;
+    max-width:1200px;
+    width:100%;
+  }
 
-    input, select, textarea {
-      padding: 15px;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
-      background-color: #e0e0e0;
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-      font-weight: bold;
-      color: #555;
-    }
+  .form-col{
+    display:flex;
+    flex-direction:column;
+    gap:30px;                    /* más aire vertical */
+    min-width:380px;             /* inputs más anchos */
+    flex:1;
+  }
 
-    textarea {
-      resize: vertical;
-    }
+  input,select,textarea{
+    padding:22px 28px;           /* cojín grande */
+    font-size:26px;              /* texto grande */
+    border:none;
+    border-radius:16px;
+    background:#e0e0e0;
+    box-shadow:inset 0 3px 6px rgba(0,0,0,0.12);
+    font-weight:bold;
+    color:#444;
+  }
 
-    .submit-btn {
-      margin-top: 40px;
-      background-color: #7DE97D;
-      color: black;
-      font-size: 20px;
-      font-weight: bold;
-      padding: 15px 30px;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+  textarea{resize:vertical;}
 
-    .submit-btn:hover {
-      background-color: #60d860;
-    }
-
-    .form-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-  </style>
+  .submit-btn{
+    margin-top:50px;
+    background:#7DE97D;
+    color:#000;
+    font-size:34px;
+    font-weight:bold;
+    padding:22px 60px;
+    border:none;
+    border-radius:24px;
+    cursor:pointer;
+    transition:background-color .3s;
+  }
+  .submit-btn:hover{background:#60d860;}
+</style>
 </head>
 <body>
   <header>

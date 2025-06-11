@@ -91,27 +91,24 @@
       justify-content: center;
     }
 
-    .toggle-eye {
+    .password-wrapper img {
       position: absolute;
       right: 15%;
       top: 50%;
       transform: translateY(-50%);
-      background: none;
-      border: none;
+      width: 25px;
+      height: 25px;
       cursor: pointer;
-      font-size: 24px;
     }
   </style>
 </head>
-
 <body>
   <header>ACCESO ADMINISTRADOR</header>
 
   <div class="ir-atras" onclick="location.href='/'">← IR ATRÁS</div>
 
   {% if error %}
-  <div
-    style="background-color: #ffcccc; color: #990000; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; font-size: 25px; margin-top: 20px;">
+  <div style="background-color: #ffcccc; color: #990000; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; font-size: 25px; margin-top: 20px;">
     {{ error }}
   </div>
   {% endif %}
@@ -120,27 +117,29 @@
     <h1>INGRESE USUARIO Y CONTRASEÑA</h1>
     <input type="text" name="usuario" placeholder="👤 USUARIO" required>
 
-<div class="password-wrapper">
-  <input type="password" name="contraseña" id="passwordInput" placeholder="🔒 CONTRASEÑA" required>
-  <img src="{{ url_for('static', filename='imagen/hide.png') }}" 
-       id="toggleEye"
-       onclick="togglePassword()"
-       style="position: absolute; right: 15%; top: 50%; transform: translateY(-50%); width: 25px; height: 25px; cursor: pointer;">
-</div>
+    <div class="password-wrapper">
+      <input type="password" name="contraseña" id="passwordInput" placeholder="🔒 CONTRASEÑA" required>
+      <img src="{{ url_for('static', filename='imagen/hide.png') }}" 
+           id="toggleEye"
+           onclick="togglePassword()">
+    </div>
 
-<script>
-  function togglePassword() {
-    const passInput = document.getElementById("passwordInput");
-    const eyeIcon = document.getElementById("toggleEye");
+    <button type="submit">INGRESAR</button>
+  </form>
 
-    if (passInput.type === "password") {
-      passInput.type = "text";
-      eyeIcon.src = "{{ url_for('static', filename='imagen/open-eye.png') }}";
-    } else {
-      passInput.type = "password";
-      eyeIcon.src = "{{ url_for('static', filename='imagen/hide.png') }}";
+  <script>
+    function togglePassword() {
+      const passInput = document.getElementById("passwordInput");
+      const eyeIcon = document.getElementById("toggleEye");
+
+      if (passInput.type === "password") {
+        passInput.type = "text";
+        eyeIcon.src = "{{ url_for('static', filename='imagen/open-eye.png') }}";
+      } else {
+        passInput.type = "password";
+        eyeIcon.src = "{{ url_for('static', filename='imagen/hide.png') }}";
+      }
     }
-  }
-</script>
+  </script>
 </body>
 </html>
