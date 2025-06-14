@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, session
 from database import get_connection
+from decimal import Decimal
 
 # ESTE PROYECTO UTILIZA FLASK, EJECÚTALO CON EL COMANDO PYTHON app.py
 app = Flask(__name__)
@@ -70,7 +71,7 @@ def ayuda():
 def gestionproductos():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT id, nombre_producto, precio_venta, cantidad FROM productos")
+    cursor.execute("SELECT * FROM productos")
     productos = cursor.fetchall()
     conn.close()
     return render_template('gestionproductos.html', productos=productos)
@@ -111,9 +112,67 @@ def agregarproducto():
     return render_template('AgregarProducto.html', proveedores=proveedores)
 
 
-@app.route('/editarproducto')
-def editarproducto():
-    return render_template('EditarProducto.html')
+@app.route('/editarproducto/<int:id>', methods=['GET', 'POST'])
+def editarproducto(id):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    print("Método:", request.method)
+
+    if request.method == 'POST':
+        nombre_producto = request.form['nombre_producto']
+        precio_compra = float(request.form['precio_compra'])
+        cantidad = int(request.form['cantidad'])
+        descripcion = request.form['descripcion']
+        codigo = request.form['codigo']
+        presentacion = request.form['presentacion']
+        ubicacion = request.form['ubicacion']
+        id_proveedor = int(request.form['id_proveedor'])
+        precio_venta = precio_compra * 1.2  # Mismo cálculo de antes
+
+        cursor.execute("""
+            UPDATE productos
+            SET nombre_producto=%s, precio_compra=%s, precio_venta=%s, cantidad=%s,
+                descripcion=%s, codigo=%s, presentacion=%s, ubicacion=%s, id_proveedor=%s
+            WHERE id=%s
+        """, (nombre_producto, precio_compra, precio_venta, cantidad,
+              descripcion, codigo, presentacion, ubicacion, id_proveedor, id))
+        
+        conn.commit()
+        conn.close()
+        return redirect('/gestionproductos')
+
+    # GET: mostrar datos en el formulario
+    cursor.execute("SELECT * FROM productos WHERE id = %s", (id,))
+    producto = cursor.fetchone()
+    conn.close()
+
+    if not producto:
+        return "Producto no encontrado", 404
+
+    precio_compra = producto["precio_compra"]
+    precio_mayor = precio_compra * Decimal('1.1')
+    precio_unidad = precio_compra * Decimal('1.2')
+
+    conn.close()
+    return render_template("EditarProducto.html",
+                           producto=producto,
+                           precio_mayor=precio_mayor,
+                           precio_unidad=precio_unidad)
+
+
+@app.route('/eliminarproducto/<int:id>', methods=['POST'])
+def eliminar_producto(id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM productos WHERE id = %s", (id,))
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return redirect('/gestionproductos')
 
 @app.route('/gestionproveedores')
 def gestionproveedores():

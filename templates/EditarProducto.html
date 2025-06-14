@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Editar Producto - SIGIC</title>
@@ -47,13 +48,15 @@
       min-width: 300px;
     }
 
-    input, select, textarea {
+    input,
+    select,
+    textarea {
       padding: 15px;
       font-size: 18px;
       border: none;
       border-radius: 10px;
       background-color: #e0e0e0;
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
       font-weight: bold;
       color: #555;
     }
@@ -86,6 +89,7 @@
     }
   </style>
 </head>
+
 <body>
   <header>
     <button class="btn-atras" onclick="location.href='/gestionproductos'">← IR ATRÁS</button>
@@ -93,33 +97,38 @@
   </header>
 
   <div class="form-wrapper">
-    <form>
+    <form method="POST">
       <div class="form-col">
-        <input type="text" placeholder="NOMBRE PRODUCTO*" required>
-        <select>
+        <input type="text" name="nombre_producto" placeholder="NOMBRE PRODUCTO*" required
+          value="{{ producto.nombre_producto }}">
+
+        <select name="categoria">
           <option value="">CATEGORIA</option>
-          <option value="lacteos">Lácteos</option>
-          <option value="snacks">Snacks</option>
-          <option value="frutas">Frutas</option>
-          <option value="aseo">Aseo</option>
+          <option value="lacteos" {% if producto.categoria=='lacteos' %}selected{% endif %}>Lácteos</option>
+          <option value="snacks" {% if producto.categoria=='snacks' %}selected{% endif %}>Snacks</option>
+          <option value="frutas" {% if producto.categoria=='frutas' %}selected{% endif %}>Frutas</option>
+          <option value="aseo" {% if producto.categoria=='aseo' %}selected{% endif %}>Aseo</option>
         </select>
-        <input type="number" placeholder="VALOR COMPRA*" required>
-        <input type="number" placeholder="VALOR X MAYOR*" required>
-        <input type="number" placeholder="STOCK*" required>
-        <textarea rows="2" placeholder="DESCRIPCIÓN"></textarea>
+
+        <input type="number" name="precio_compra" placeholder="VALOR COMPRA*" required
+          value="{{ producto.precio_compra }}">
+        <input type="number" placeholder="VALOR X MAYOR*" disabled value="{{ precio_mayor | round(2) }}">
+        <input type="number" name="cantidad" placeholder="STOCK*" required value="{{ producto.cantidad }}">
+        <textarea name="descripcion" rows="2" placeholder="DESCRIPCIÓN">{{ producto.descripcion }}</textarea>
       </div>
 
       <div class="form-col">
-        <input type="text" placeholder="CÓDIGO*" required>
-        <input type="text" placeholder="PRESENTACIÓN">
-        <input type="number" placeholder="VALOR UNT*" required>
-        <input type="text" placeholder="PROVEEDOR">
-        <input type="text" placeholder="UBICACIÓN">
-        <input type="file" accept="image/*">
+        <input type="text" name="codigo" placeholder="CÓDIGO*" required value="{{ producto.codigo }}">
+        <input type="text" name="presentacion" placeholder="PRESENTACIÓN" value="{{ producto.presentacion }}">
+        <input type="number" placeholder="VALOR UNT*" disabled value="{{ precio_unidad | round(2) }}">
+        <input type="text" name="id_proveedor" placeholder="PROVEEDOR" value="{{ producto.id_proveedor }}">
+        <input type="text" name="ubicacion" placeholder="UBICACIÓN" value="{{ producto.ubicacion }}">
+        <input type="file" accept="image/*" disabled>
       </div>
-    </form>
 
-    <button class="submit-btn">EDITAR PRODUCTO</button>
+      <button class="submit-btn" type="submit">EDITAR PRODUCTO</button>
+    </form>
   </div>
 </body>
+
 </html>
