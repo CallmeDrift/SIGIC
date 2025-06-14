@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Agregar Producto - SIGIC</title>
-<style>
-  body{
-    margin:0;
-    font-family:'Arial',sans-serif;
-    background:#ffffff;
-    font-size:120%;
-    margin-bottom: 20px; 
-  }
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #ffffff;
+      font-size: 120%;
+      margin-bottom: 20px;
+    }
 
     header {
       background-color: #4A90F8;
@@ -34,61 +35,74 @@
       cursor: pointer;
     }
 
-  /* wrapper para centrar y dar aire */
-  .form-wrapper{
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    margin-top:60px;
-  }
+    /* wrapper para centrar y dar aire */
+    .form-wrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 60px;
+    }
 
-  form{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:60px;                    /* más aire entre columnas */
-    padding:60px 30px;
-    max-width:1200px;
-    width:100%;
-  }
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 60px;
+      /* más aire entre columnas */
+      padding: 60px 30px;
+      max-width: 1200px;
+      width: 100%;
+    }
 
-  .form-col{
-    display:flex;
-    flex-direction:column;
-    gap:30px;                    /* más aire vertical */
-    min-width:380px;             /* inputs más anchos */
-    flex:1;
-  }
+    .form-col {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      /* más aire vertical */
+      min-width: 380px;
+      /* inputs más anchos */
+      flex: 1;
+    }
 
-  input,select,textarea{
-    padding:22px 28px;           /* cojín grande */
-    font-size:26px;              /* texto grande */
-    border:none;
-    border-radius:16px;
-    background:#e0e0e0;
-    box-shadow:inset 0 3px 6px rgba(0,0,0,0.12);
-    font-weight:bold;
-    color:#444;
-  }
+    input,
+    select,
+    textarea {
+      padding: 22px 28px;
+      /* cojín grande */
+      font-size: 26px;
+      /* texto grande */
+      border: none;
+      border-radius: 16px;
+      background: #e0e0e0;
+      box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.12);
+      font-weight: bold;
+      color: #444;
+    }
 
-  textarea{resize:vertical;}
+    textarea {
+      resize: vertical;
+    }
 
-  .submit-btn{
-    margin-top:50px;
-    background:#7DE97D;
-    color:#000;
-    font-size:34px;
-    font-weight:bold;
-    padding:22px 60px;
-    border:none;
-    border-radius:24px;
-    cursor:pointer;
-    transition:background-color .3s;
-  }
-  .submit-btn:hover{background:#60d860;}
-</style>
+    .submit-btn {
+      margin-top: 50px;
+      background: #7DE97D;
+      color: #000;
+      font-size: 34px;
+      font-weight: bold;
+      padding: 22px 60px;
+      border: none;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: background-color .3s;
+    }
+
+    .submit-btn:hover {
+      background: #60d860;
+    }
+  </style>
 </head>
+
 <body>
   <header>
     <button class="btn-atras" onclick="location.href='/gestionproductos'">← IR ATRÁS</button>
@@ -96,33 +110,42 @@
   </header>
 
   <div class="form-wrapper">
-    <form>
+    <form method="POST" action="/agregarproducto">
       <div class="form-col">
-        <input type="text" placeholder="NOMBRE PRODUCTO*" required>
-        <select>
+        <input type="text" name="nombre_producto" placeholder="NOMBRE PRODUCTO*" required>
+
+        <!-- La categoría por ahora no se guarda -->
+        <select name="categoria">
           <option value="">CATEGORIA</option>
           <option value="lacteos">Lácteos</option>
           <option value="snacks">Snacks</option>
           <option value="frutas">Frutas</option>
           <option value="aseo">Aseo</option>
         </select>
-        <input type="number" placeholder="VALOR COMPRA*" required>
-        <input type="number" placeholder="VALOR X MAYOR*" required>
-        <input type="number" placeholder="STOCK*" required>
-        <textarea rows="2" placeholder="DESCRIPCIÓN"></textarea>
+
+        <input type="number" name="precio_compra" placeholder="VALOR COMPRA*" required>
+        <input type="number" name="cantidad" placeholder="STOCK*" required>
+        <textarea name="descripcion" rows="2" placeholder="DESCRIPCIÓN"></textarea>
       </div>
 
       <div class="form-col">
-        <input type="text" placeholder="CÓDIGO*" required>
-        <input type="text" placeholder="PRESENTACIÓN">
-        <input type="number" placeholder="VALOR UNT*" required>
-        <input type="text" placeholder="PROVEEDOR">
-        <input type="text" placeholder="UBICACIÓN">
-        <input type="file" accept="image/*">
-      </div>
-    </form>
+        <input type="text" name="codigo" placeholder="CÓDIGO*" required>
+        <input type="text" name="presentacion" placeholder="PRESENTACIÓN">
 
-    <button class="submit-btn">AGREGAR PRODUCTO</button>
+        <!-- SELECT para proveedor -->
+        <select name="id_proveedor" required>
+          <option value="">SELECCIONA PROVEEDOR</option>
+          {% for proveedor in proveedores %}
+            <option value="{{ proveedor.id }}">{{ proveedor.empresa }}</option>
+          {% endfor %}
+        </select>
+
+        <input type="text" name="ubicacion" placeholder="UBICACIÓN">
+        <input type="file" accept="image/*" disabled>
+      </div>
+
+      <button class="submit-btn" type="submit">AGREGAR PRODUCTO</button>
+    </form>
   </div>
 </body>
 </html>

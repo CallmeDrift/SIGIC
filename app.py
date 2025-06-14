@@ -75,9 +75,41 @@ def gestionproductos():
     conn.close()
     return render_template('gestionproductos.html', productos=productos)
 
-@app.route('/agregarproducto')
+@app.route('/agregarproducto', methods=['GET', 'POST'])
 def agregarproducto():
-    return render_template('AgregarProducto.html')
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    if request.method == 'POST':
+        nombre = request.form['nombre_producto']
+        codigo = request.form['codigo']
+        precio_compra = float(request.form['precio_compra'])
+        precio_venta = round(precio_compra * 1.2, 2)
+        precio_mayor = round(precio_compra * 1.1, 2)  # (aún no se usa en DB pero ya lo tienes calculado)
+        descripcion = request.form.get('descripcion', '')
+        presentacion = request.form.get('presentacion', '')
+        ubicacion = request.form.get('ubicacion', '')
+        stock = int(request.form['cantidad'])
+        proveedor = request.form.get('id_proveedor')
+
+        # Insertar producto
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO productos 
+            (nombre_producto, codigo, precio_compra, precio_venta, descripcion, presentacion, ubicacion, cantidad, id_proveedor)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (nombre, codigo, precio_compra, precio_venta, descripcion, presentacion, ubicacion, stock, proveedor))
+
+        conn.commit()
+        conn.close()
+        return redirect('/gestionproductos')
+
+    # Si es GET, cargar proveedores
+    cursor.execute("SELECT id, empresa FROM proveedores")
+    proveedores = cursor.fetchall()
+    conn.close()
+    return render_template('AgregarProducto.html', proveedores=proveedores)
+
 
 @app.route('/editarproducto')
 def editarproducto():
