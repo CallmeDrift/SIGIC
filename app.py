@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash, session
+from flask import Flask, render_template, request, redirect, flash, session, jsonify
 from database import get_connection
 from decimal import Decimal
 
@@ -41,8 +41,6 @@ def login():
             return render_template('LoginAdmin.html', error="Usuario o contraseña incorrectos 😓")
 
     return render_template('LoginAdmin.html')
-
-
 
 @app.route('/caja', methods=['GET', 'POST'])
 def caja():
@@ -99,7 +97,7 @@ def buscarproducto():
     resultados = cursor.fetchall()
     conn.close()
 
-    return {'productos': resultados}
+    return jsonify(resultados)
 
 @app.route('/consulta')
 def inventario():
@@ -299,7 +297,6 @@ def eliminarproveedor(id):
         conn.close()
 
     return redirect('/gestionproveedores')
-
 
 
 @app.route('/gestionclientes')

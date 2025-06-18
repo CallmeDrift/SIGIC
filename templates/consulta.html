@@ -157,6 +157,11 @@
       font-size: 28px;
       margin-bottom: 15px;
     }
+
+    .peligro-stock {
+      color: red;
+      font-weight: bold;
+    }
   </style>
 </head>
 
@@ -180,14 +185,17 @@
           <th>Valor x und/lb</th>
           <th>Stock</th>
         </tr>
+
+
       </thead>
       <tbody>
         {% for producto in productos %}
-        <tr data-nombre="{{ producto.nombre_producto }}" data-codigo="{{ producto.codigo }}"
-          data-categoria="{{ producto.categoria }}" data-precio-compra="{{ producto.precio_compra }}"
-          data-precio-venta="{{ producto.precio_venta }}" data-desc="{{ producto.descripcion }}"
-          data-pre="{{ producto.presentacion }}" data-ubi="{{ producto.ubicacion }}"
-          data-stock="{{ producto.cantidad }}" data-proveedor="{{ producto.id_proveedor }}"
+        <tr class="{% if producto.cantidad < 5 %}peligro-stock{% endif %}" data-nombre="{{ producto.nombre_producto }}"
+          data-codigo="{{ producto.codigo }}" data-categoria="{{ producto.categoria }}"
+          data-precio-compra="{{ producto.precio_compra }}" data-precio-venta="{{ producto.precio_venta }}"
+          data-desc="{{ producto.descripcion }}" data-pre="{{ producto.presentacion }}"
+          data-ubi="{{ producto.ubicacion }}" data-stock="{{ producto.cantidad }}"
+          data-proveedor="{{ producto.id_proveedor }}"
           data-img="{{ url_for('static', filename='imagen/' ~ producto.imagen) }}">
           <td>{{ producto.nombre_producto }}</td>
           <td>{{ producto.categoria }}</td>
@@ -196,6 +204,7 @@
         </tr>
         {% endfor %}
       </tbody>
+
     </table>
   </div>
 
