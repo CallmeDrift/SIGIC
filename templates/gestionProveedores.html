@@ -62,12 +62,12 @@
     }
 
     .buscar-input {
-      font-size: 20px;
+      font-size: 35px;
       padding: 10px 20px;
       border-radius: 25px;
       border: 1px solid #ccc;
       background-color: #f0f0f0;
-      width: 300px;
+      width: 500px;
       text-align: center;
       font-weight: bold;
       color: gray;
@@ -135,34 +135,69 @@
       <tr>
         <th>NOMBRE</th>
         <th>EMPRESA</th>
-        <th>TELÉFONO</th>
+        <th>CONTACTO</th>
         <th>CORREO</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Carlos López</td>
-        <td>Distribuciones Andinas</td>
-        <td>3001234567 / 3187654321</td>
-        <td>carlos@andinas.com</td>
+      {% for proveedor in proveedores %}
+      <tr data-nombre="{{ proveedor.nombre }}" data-empresa="{{ proveedor.empresa }}">
+        <td>{{ proveedor.nombre }}</td>
+        <td>{{ proveedor.empresa }}</td>
+        <td>{{ proveedor.contacto }}</td>
+        <td>{{ proveedor.correo }}</td>
         <td class="acciones-proveedor">
-          <button class="editar-btn" onclick="location.href='/editarproveedor'">EDITAR</button>
-          <button class="eliminar-btn">ELIMINAR</button>
+          <button class="editar-btn" onclick="location.href='/editarproveedor/{{ proveedor.id }}'">EDITAR</button>
+          <button onclick="abrirModal('{{ proveedor.id }}')" class="eliminar-btn">ELIMINAR</button>
         </td>
       </tr>
-      <tr>
-        <td>María Gómez</td>
-        <td>Alimentos del Valle</td>
-        <td>3019876543 / 3101122334</td>
-        <td>maria@valle.com</td>
-        <td class="acciones-proveedor">
-          <button class="editar-btn" onclick="location.href='/editarproveedor'">EDITAR</button>
-          <button class="eliminar-btn">ELIMINAR</button>
-        </td>
-      </tr>
+      {% endfor %}
     </tbody>
   </table>
+
+  <!-- Modal eliminación -->
+  <div id="modalEliminar" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:9999;">
+    <div style="background:white; padding:30px; border-radius:20px; text-align:center;">
+      <h2>¿¿Estás seguro de que deseas eliminar este proveedor??</h2>
+      <form id="formEliminar" method="POST">
+        <button type="submit" style="background-color:#E74C3C; color:white; padding:10px 20px; border:none; border-radius:10px; font-size:20px; margin-right:10px; cursor: pointer; ">Eliminar</button>
+        <button type="button" id="btnCancelar" style="background-color:gray; color:white; padding:10px 20px; border:none; border-radius:10px; font-size:20px;">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const inputBusqueda = document.querySelector(".buscar-input");
+    const filas = document.querySelectorAll("tbody tr");
+
+    inputBusqueda.addEventListener("input", () => {
+      const valor = inputBusqueda.value.toLowerCase();
+      filas.forEach(fila => {
+        const nombre = fila.dataset.nombre?.toLowerCase() || "";
+        const empresa = fila.dataset.empresa?.toLowerCase() || "";
+        fila.style.display = (nombre.includes(valor) || empresa.includes(valor)) ? "" : "none";
+      });
+    });
+
+    const modal = document.getElementById("modalEliminar");
+    const formEliminar = document.getElementById("formEliminar");
+
+    function abrirModal(idProveedor) {
+      formEliminar.action = `/eliminarproveedor/${idProveedor}`;
+      modal.style.display = "flex";
+    }
+
+    document.getElementById("btnCancelar").addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    });
+  </script>
 </body>
 
 </html>

@@ -21,9 +21,6 @@ def main():
 def admin():
     return render_template('admin.html')
 
-@app.route('/cabecera')
-def cabecera():
-    return render_template('cabecera.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -46,13 +43,63 @@ def login():
     return render_template('LoginAdmin.html')
 
 
-@app.route('/comunicados')
-def comunicados():
-    return render_template('comunicados.html')
 
-@app.route('/caja')
+@app.route('/caja', methods=['GET', 'POST'])
 def caja():
-    return render_template('caja.html')
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    if request.method == 'POST':
+        id_cliente = request.form['cliente_id']
+        productos = eval(request.form['productos'])  # eval solo si confías en el input
+
+        total_venta = sum([p['total'] for p in productos])
+
+        cursor.execute("""
+            INSERT INTO ventas (fecha_venta, total_venta, id_usuario, id_cliente)
+            VALUES (CURDATE(), %s, %s, %s)
+        """, (total_venta, 1, id_cliente))
+        id_venta = cursor.lastrowid
+
+        for producto in productos:
+            cursor.execute("""
+                INSERT INTO detallesventas (id_producto, id_cliente, cantidad, valor_unitario, valor_total, fecha, id_venta)
+                VALUES (%s, %s, %s, %s, %s, CURDATE(), %s)
+            """, (
+                producto['id'], id_cliente, producto['cantidad'],
+                producto['precio_venta'], producto['total'], id_venta
+            ))
+
+            cursor.execute("""
+                UPDATE productos
+                SET cantidad = cantidad - %s
+                WHERE id = %s
+            """, (producto['cantidad'], producto['id']))
+
+        conn.commit()
+        conn.close()
+        return redirect('/caja')
+
+    cursor.execute("SELECT id, nombre FROM clientes")
+    clientes = cursor.fetchall()
+    conn.close()
+    return render_template('caja.html', clientes=clientes)
+
+@app.route('/buscarproducto')
+def buscarproducto():
+    query = request.args.get('query', '')
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("""
+        SELECT id, nombre_producto, codigo, precio_venta
+        FROM productos
+        WHERE cantidad > 0 AND (nombre_producto LIKE %s OR codigo LIKE %s)
+        LIMIT 10
+    """, (f"%{query}%", f"%{query}%"))
+    resultados = cursor.fetchall()
+    conn.close()
+
+    return {'productos': resultados}
 
 @app.route('/consulta')
 def inventario():
@@ -175,28 +222,167 @@ def eliminar_producto(id):
     return redirect('/gestionproductos')
 
 @app.route('/gestionproveedores')
-def gestionproveedores():
-    return render_template('gestionproveedores.html')
+def gestion_proveedores():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM proveedores")
+    proveedores = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template('gestionproveedores.html', proveedores=proveedores)
 
-@app.route('/agregarproveedor')
-def agregarproveedor(): 
-    return render_template('AgregarProveedor.html')
+@app.route('/agregarproveedor', methods=['GET', 'POST'])
+def agregarproveedor():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        empresa = request.form['empresa']
+        contacto = request.form['contacto']
+        telefono2 = request.form.get('telefono2') or None  # Aquí está la magia
 
-@app.route('/editarproveedor')
-def editarproveedor():
-    return render_template('EditarProveedor.html')
+        try:
+            conn = get_connection()
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT INTO proveedores (nombre, empresa, contacto, telefono2)
+                VALUES (%s, %s, %s, %s)
+            """, (nombre, empresa, contacto, telefono2))
+            conn.commit()
+            conn.close()
+            return redirect('/gestionproveedores')
+        except Exception as e:
+            print("Error agregando proveedor:", e)
+            return "Ocurrió un error agregando el proveedor. Revisá consola."
+
+    return render_template('agregarproveedor.html')
+
+@app.route('/editarproveedor/<int:id>', methods=['GET', 'POST'])
+def editarproveedor(id):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        empresa = request.form['empresa']
+        contacto = request.form['contacto']
+
+        cursor.execute("""
+            UPDATE proveedores
+            SET nombre = %s, empresa = %s, contacto = %s
+            WHERE id = %s
+        """, (nombre, empresa, contacto, id))
+
+        conn.commit()
+        conn.close()
+        return redirect('/gestionproveedores')
+
+    # GET: Mostrar datos actuales en el formulario
+    cursor.execute("SELECT * FROM proveedores WHERE id = %s", (id,))
+    proveedor = cursor.fetchone()
+    conn.close()
+
+    if not proveedor:
+        return "Proveedor no encontrado", 404
+
+    return render_template('editarproveedor.html', proveedor=proveedor)
+
+@app.route('/eliminarproveedor/<int:id>', methods=['POST', 'GET'])
+def eliminarproveedor(id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("DELETE FROM proveedores WHERE id = %s", (id,))
+        conn.commit()
+    except Exception as e:
+        print(f"Error eliminando proveedor: {e}")
+    finally:
+        conn.close()
+
+    return redirect('/gestionproveedores')
+
+
 
 @app.route('/gestionclientes')
-def gestionclientes():
-    return render_template('gestionClientes.html')
+def gestion_clientes():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM clientes")
+    clientes = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template('gestionClientes.html', clientes=clientes)
 
-@app.route('/agregarcliente')
+@app.route('/agregarcliente', methods=['GET', 'POST'])
 def agregarcliente():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        cedula = request.form['cedula']
+        contacto = request.form['contacto']
+
+        conn = get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("""
+                    INSERT INTO clientes (nombre, apellido, cedula, contacto)
+                    VALUES (%s, %s, %s, %s)
+                """, (nombre, apellido, cedula, contacto))
+            conn.commit()
+        except Exception as e:
+            print("Error al insertar cliente:", e)
+            conn.rollback()
+            return "Ocurrió un error agregando el cliente. Revisá consola."
+        finally:
+            cursor.close()
+            conn.close()
+
+        return redirect('/gestionclientes')
+
     return render_template('AgregarClientes.html')
 
-@app.route('/editarcliente')
-def editarcliente():
-    return render_template('EditarClientes.html')
+@app.route('/editarcliente/<int:id>', methods=['GET', 'POST'])
+def editarcliente(id):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        cedula = request.form['cedula']
+        contacto = request.form['contacto']
+
+        cursor.execute("""
+            UPDATE clientes
+            SET nombre = %s, apellido = %s, cedula = %s, contacto = %s
+            WHERE id = %s
+        """, (nombre, apellido, cedula, contacto, id))
+
+        conn.commit()
+        conn.close()
+        return redirect('/gestionclientes')
+
+    # GET: Mostrar datos actuales en el formulario
+    cursor.execute("SELECT * FROM clientes WHERE id = %s", (id,))
+    cliente = cursor.fetchone()
+    conn.close()
+
+    if not cliente:
+        return "Cliente no encontrado", 404
+
+    return render_template('EditarClientes.html', cliente=cliente)
+
+@app.route('/eliminarcliente/<int:id>', methods=['POST'])
+def eliminarcliente(id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM clientes WHERE id = %s", (id,))
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+    return redirect('/gestionclientes')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

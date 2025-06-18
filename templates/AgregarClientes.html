@@ -97,12 +97,12 @@
     </div>
 
     <div class="contenido">
-        <form>
+        <form method="POST" action="/agregarcliente">
             <div class="form-grid">
-                <input type="text" placeholder="NOMBRE" required>
-                <input type="text" placeholder="APELLIDO" required>
-                <input type="text" placeholder="IDENTIFICACION" required>
-                <input type="text" placeholder="NUMERO DE CONTACTO" required>
+                <input type="text" name="nombre" placeholder="NOMBRE" required>
+                <input type="text" name="apellido" placeholder="APELLIDO" required>
+                <input type="text" name="cedula" placeholder="IDENTIFICACIÓN" required>
+                <input type="text" name="contacto" placeholder="NÚMERO DE CONTACTO" required>
             </div>
             <button type="submit" class="submit-btn">AGREGAR CLIENTE</button>
         </form>

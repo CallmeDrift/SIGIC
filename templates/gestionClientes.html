@@ -4,150 +4,195 @@
   <meta charset="UTF-8">
   <title>Gestionar Clientes - SIGIC</title>
   <style>
-    body{
-      margin:0;
-      font-family:'Inter',sans-serif;
-      background:white;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      min-height:100vh;
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
     }
-    /*── Header ───────────────────────────*/
-    .encabezado{
-      position:relative;
-      background:#4A90F8;
-      color:black;
-      width:100%;
-      height:80px;
-      display:flex;
-      align-items:center;
+
+    .encabezado {
+      position: relative;
+      background: #4A90F8;
+      color: black;
+      width: 100%;
+      height: 80px;
+      display: flex;
+      align-items: center;
     }
-    .titulo{
-      position:absolute;
-      left:50%;
-      transform:translateX(-50%);
-      font-size:40px;
-      font-weight:bold;
+
+    .titulo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 40px;
+      font-weight: bold;
     }
-    .btn-atras{
-      margin-left:30px;
-      background:none;
-      border:none;
-      color:black;
-      font-size:30px;
-      font-weight:bold;
-      cursor:pointer;
+
+    .btn-atras {
+      margin-left: 30px;
+      background: none;
+      border: none;
+      color: black;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
     }
-    /*── Barra de acciones ────────────────*/
-    .acciones{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      width:90%;
-      margin:30px 0 10px;
+
+    .acciones {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 90%;
+      margin: 30px 0 10px;
     }
-    .agregar-btn{
-      background:#77E28C;
-      border:none;
-      border-radius:20px;
-      padding:10px 25px;
-      font-size:30px;
-      font-weight:bold;
-      cursor:pointer;
+
+    .agregar-btn {
+      background: #77E28C;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 25px;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
     }
-    .buscar-input{
-      font-size:20px;
-      padding:10px 20px;
-      border-radius:25px;
-      border:1px solid #ccc;
-      background:#f0f0f0;
-      width:300px;
-      text-align:center;
-      font-weight:bold;
-      color:gray;
+
+    .buscar-input {
+      font-size: 35px;
+      padding: 10px 20px;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      background: #f0f0f0;
+      width: 500px;
+      text-align: center;
+      font-weight: bold;
+      color: gray;
     }
-    /*── Tabla ────────────────────────────*/
-    table{
-      width:90%;
-      border-collapse:collapse;
-      font-size:22px;
-      margin-top:20px;
+
+    table {
+      width: 90%;
+      border-collapse: collapse;
+      font-size: 22px;
+      margin-top: 20px;
     }
-    th,td{
-      padding:15px 10px;
-      border-bottom:1px solid #000;
-      text-align:left;
+
+    th, td {
+      padding: 15px 10px;
+      border-bottom: 1px solid #000;
+      text-align: left;
     }
-    th{font-weight:bold;}
-    .acciones-cliente{
-      display:flex;
-      gap:10px;
+
+    th {
+      font-weight: bold;
     }
-    .editar-btn{
-      background:#FFD966;
-      border:none;
-      border-radius:10px;
-      padding:5px 15px;
-      font-size:25px;
-      font-weight:bold;
-      cursor:pointer;
+
+    .acciones-cliente {
+      display: flex;
+      gap: 10px;
     }
-    .eliminar-btn{
-      background:#E74C3C;
-      border:none;
-      border-radius:10px;
-      padding:5px 15px;
-      font-size:25px;
-      color:#fff;
-      font-weight:bold;
-      cursor:pointer;
+
+    .editar-btn {
+      background: #FFD966;
+      border: none;
+      border-radius: 10px;
+      padding: 5px 15px;
+      font-size: 25px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .eliminar-btn {
+      background: #E74C3C;
+      border: none;
+      border-radius: 10px;
+      padding: 5px 15px;
+      font-size: 25px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <!-- Header -->
+
   <div class="encabezado">
     <button onclick="location.href='/admin'" class="btn-atras">← IR ATRÁS</button>
     <span class="titulo">GESTIONAR CLIENTES</span>
   </div>
 
-  <!-- Barra de acciones -->
   <div class="acciones">
     <button onclick="location.href='/agregarcliente'" class="agregar-btn">AGREGAR CLIENTE</button>
-    <input type="text" placeholder="🔍BUSCAR CLIENTE" class="buscar-input">
+    <input type="text" placeholder="🔍 BUSCAR CLIENTE" class="buscar-input">
   </div>
 
-  <!-- Tabla de clientes -->
   <table>
     <thead>
       <tr>
         <th>NOMBRE</th>
-        <th>DNI</th>
+        <th>CEDULA</th>
         <th>CONTACTO</th>
-        <th></th>
+        <th>ACCIONES</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Ana Pérez</td>
-        <td>12345678</td>
-        <td>3001234567</td>
+      {% for cliente in clientes %}
+      <tr data-nombre="{{ cliente.nombre }}">
+        <td>{{ cliente.nombre }}</td>
+        <td>{{ cliente.cedula }}</td>
+        <td>{{ cliente.contacto }}</td>
         <td class="acciones-cliente">
-          <button class="editar-btn" onclick="location.href='/editarcliente'">EDITAR</button>
-          <button class="eliminar-btn">ELIMINAR</button>
+          <button class="editar-btn" onclick="location.href='/editarcliente/{{ cliente.id }}'">EDITAR</button>
+          <button class="eliminar-btn" onclick="abrirModalEliminar('{{ cliente.id }}')">ELIMINAR</button>
         </td>
       </tr>
-      <tr>
-        <td>Juan Ortega</td>
-        <td>98765432</td>
-        <td>3109876543</td>
-        <td class="acciones-cliente">
-          <button class="editar-btn" onclick="location.href='/editarcliente'">EDITAR</button>
-          <button class="eliminar-btn">ELIMINAR</button>
-        </td>
-      </tr>
+      {% endfor %}
     </tbody>
   </table>
+
+  <!-- Modal de confirmación de eliminación -->
+  <div id="modalEliminar" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:9999;">
+    <div style="background:white; padding:30px; border-radius:20px; text-align:center; max-width:400px;">
+      <h2>¿Seguro que quieres eliminar este cliente?</h2>
+      <form id="formEliminar" method="POST">
+        <button type="submit" style="background-color:#E74C3C; color:white; padding:10px 25px; border:none; border-radius:10px; font-size:18px; margin:10px;">Eliminar</button>
+        <button type="button" id="btnCancelar" style="background-color:#95a5a6; color:white; padding:10px 25px; border:none; border-radius:10px; font-size:18px;">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const inputBusqueda = document.querySelector(".buscar-input");
+    const filas = document.querySelectorAll("tbody tr");
+
+    inputBusqueda.addEventListener("input", () => {
+      const valor = inputBusqueda.value.toLowerCase();
+      filas.forEach(fila => {
+        const nombre = fila.dataset.nombre?.toLowerCase() || "";
+        fila.style.display = nombre.includes(valor) ? "" : "none";
+      });
+    });
+
+    const modal = document.getElementById("modalEliminar");
+    const formEliminar = document.getElementById("formEliminar");
+
+    function abrirModalEliminar(idCliente) {
+      formEliminar.action = `/eliminarcliente/${idCliente}`;
+      modal.style.display = "flex";
+    }
+
+    document.getElementById("btnCancelar").addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  </script>
 </body>
+
 </html>
