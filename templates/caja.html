@@ -142,6 +142,22 @@
       background-color: #cfd8dc;
       cursor: pointer;
     }
+
+    .control-btn {
+      background-color: #e0e0e0;
+      border: none;
+      border-radius: 5px;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 5px 10px;
+      margin: 0 5px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .control-btn:hover {
+      background-color: #cccccc;
+    }
   </style>
 </head>
 
@@ -195,6 +211,9 @@
         </select>
         <input type="hidden" id="productosData" name="productos">
         <br>
+        <input type="number" id="pagoCliente" placeholder="Ingrese el valor pagado" required
+          style="font-size:20px; padding:10px; margin-bottom:10px;" oninput="calcularCambio()">
+        <div id="cambioTexto" style="font-size:20px; margin-bottom:20px;">Cambio: $0</div>
         <button type="submit"
           style="background-color:#77E28C; font-size:20px; padding:10px 20px; border:none; border-radius:10px; cursor: pointer;">Confirmar</button>
         <button type="button" onclick="cerrarModal()"
@@ -231,6 +250,7 @@
         existente.cantidad++;
         existente.total = existente.cantidad * existente.precio_venta;
       } else {
+        producto.cantidad_disponible = producto.cantidad;  // Guardamos el stock real
         producto.cantidad = 1;
         producto.total = producto.precio_venta;
         productosSeleccionados.push(producto);
@@ -247,13 +267,17 @@
       tbody.innerHTML = '';
       let totalGeneral = 0;
 
-      productosSeleccionados.forEach(prod => {
+      productosSeleccionados.forEach((prod, index) => {
         const fila = document.createElement('tr');
         fila.innerHTML = `
           <td>${prod.nombre_producto}</td>
           <td>$${prod.precio_venta.toFixed(2)}</td>
-          <td>${prod.cantidad}</td>
-          <td>$${(prod.total).toFixed(2)}</td>
+          <td>
+            <button class="control-btn" onclick="restarCantidad(${index})">-</button>
+            ${prod.cantidad}
+            <button class="control-btn" onclick="sumarCantidad(${index})">+</button>
+          </td>
+          <td>$${prod.total.toFixed(2)}</td>
         `;
         tbody.appendChild(fila);
         totalGeneral += prod.total;
@@ -269,6 +293,47 @@
 
     function cerrarModal() {
       document.getElementById('modal').style.display = 'none';
+    }
+
+    function calcularCambio() {
+      const pago = parseFloat(document.getElementById('pagoCliente').value);
+      const totalTexto = document.getElementById('totalGeneral').textContent;
+      const total = parseFloat(totalTexto.replace(/[^\d.]/g, ''));
+
+      const cambio = pago - total;
+      const cambioTexto = document.getElementById('cambioTexto');
+
+      if (!isNaN(cambio)) {
+        cambioTexto.textContent = cambio >= 0
+          ? `Cambio: $${cambio.toFixed(2)}`
+          : `Falta: $${Math.abs(cambio).toFixed(2)}`;
+        cambioTexto.style.color = cambio >= 0 ? "green" : "red";
+      } else {
+        cambioTexto.textContent = "Cambio: $0";
+        cambioTexto.style.color = "black";
+      }
+    }
+
+    function sumarCantidad(index) {
+      const producto = productosSeleccionados[index];
+
+      if (producto.cantidad < producto.cantidad_disponible) {
+        producto.cantidad++;
+        producto.total = producto.cantidad * producto.precio_venta;
+        renderTabla();
+      } else {
+        alert("No hay más unidades disponibles de este producto 😬");
+      }
+    }
+
+    function restarCantidad(index) {
+      productosSeleccionados[index].cantidad--;
+      if (productosSeleccionados[index].cantidad <= 0) {
+        productosSeleccionados.splice(index, 1);
+      } else {
+        productosSeleccionados[index].total = productosSeleccionados[index].cantidad * productosSeleccionados[index].precio_venta;
+      }
+      renderTabla();
     }
 
     function enviarCompra() {

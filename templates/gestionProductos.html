@@ -82,7 +82,7 @@
 
         th,
         td {
-            padding: 15px 10px;
+            padding:  15px 20px 15px 10px;
             border-bottom: 1px solid #000;
             text-align: left;
         }
@@ -93,6 +93,7 @@
 
         .acciones-producto {
             display: flex;
+            justify-content: flex-end;
             gap: 10px;
         }
 
@@ -104,6 +105,7 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 25px;
+            position: sticky;
         }
 
         .eliminar-btn {
@@ -115,11 +117,17 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 25px;
+            position: sticky;
         }
 
         .btn-eliminar,
         .btn-cancelar {
             cursor: pointer;
+        }
+
+        .peligro-stock {
+            background-color: #ffcccc;
+            /* rojo clarito */
         }
     </style>
 </head>
@@ -147,7 +155,8 @@
         </thead>
         <tbody>
             {% for producto in productos %}
-            <tr data-nombre="{{ producto.nombre_producto }}" data-codigo="{{ producto.codigo }}">
+            <tr data-nombre="{{ producto.nombre_producto }}" data-codigo="{{ producto.codigo }}"
+                class="{% if producto.cantidad < 5 %}peligro-stock{% endif %}">
                 <td>{{ producto.nombre_producto }}</td>
                 <td>${{ producto.precio_venta }}</td>
                 <td>{{ producto.cantidad }} uni</td>
@@ -167,8 +176,10 @@
         <div style="background:white; padding:30px; border-radius:20px; text-align:center;">
             <h2>¿Estás seguro de que deseas eliminar este producto?</h2>
             <form id="formEliminar" method="POST">
-                <button type="submit" class="btn-eliminar" style="background-color:#E74C3C; color:white; padding:10px 20px; border:none; border-radius:10px; font-size:20px; margin-right:10px;">Eliminar</button>
-                <button type="button" id="btnCancelar" class="btn-cancelar" style="background-color:gray; color:white; padding:10px 20px; border:none; border-radius:10px; font-size:20px;">Cancelar</button>
+                <button type="submit" class="btn-eliminar"
+                    style="background-color:#E74C3C; color:white; padding:10px 20px; border:none; border-radius:10px; font-size:20px; margin-right:10px;">Eliminar</button>
+                <button type="button" id="btnCancelar" class="btn-cancelar"
+                    style="background-color:gray; color:white; padding:10px 20px; border:none; border-radius:10px; font-size:20px;">Cancelar</button>
             </form>
         </div>
     </div>

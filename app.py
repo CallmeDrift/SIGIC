@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, redirect, flash, session, jsonify
 from database import get_connection
 from decimal import Decimal
+from werkzeug.utils import secure_filename
+import os
 
 # ESTE PROYECTO UTILIZA FLASK, EJECÚTALO CON EL COMANDO PYTHON app.py
 app = Flask(__name__)
-app.secret_key = 'Clave.77'  # Debo recordar cambiar esta clave por una más segura en producción
+app.secret_key = 'Clave.77' 
 
 
 # Página principal
@@ -20,7 +22,6 @@ def main():
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -89,7 +90,7 @@ def buscarproducto():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute("""
-        SELECT id, nombre_producto, codigo, precio_venta
+        SELECT id, nombre_producto, codigo, precio_venta, cantidad
         FROM productos
         WHERE cantidad > 0 AND (nombre_producto LIKE %s OR codigo LIKE %s)
         LIMIT 10
@@ -131,40 +132,44 @@ def agregarproducto():
         codigo = request.form['codigo']
         precio_compra = float(request.form['precio_compra'])
         precio_venta = round(precio_compra * 1.2, 2)
-        precio_mayor = round(precio_compra * 1.1, 2)  # (aún no se usa en DB pero ya lo tienes calculado)
         descripcion = request.form.get('descripcion', '')
         presentacion = request.form.get('presentacion', '')
         ubicacion = request.form.get('ubicacion', '')
         stock = int(request.form['cantidad'])
         proveedor = request.form.get('id_proveedor')
 
-        # Insertar producto
-        cursor = conn.cursor()
+        imagen = request.files.get('imagen')
+        nombre_imagen = ''
+
+        if imagen and imagen.filename != '':
+            nombre_imagen = secure_filename(imagen.filename)
+            ruta_guardado = os.path.join('static/imagen', nombre_imagen)
+            imagen.save(ruta_guardado)
+
+        # Insertar en la DB
         cursor.execute("""
             INSERT INTO productos 
-            (nombre_producto, codigo, precio_compra, precio_venta, descripcion, presentacion, ubicacion, cantidad, id_proveedor)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (nombre, codigo, precio_compra, precio_venta, descripcion, presentacion, ubicacion, stock, proveedor))
+            (nombre_producto, codigo, precio_compra, precio_venta, descripcion, presentacion, ubicacion, cantidad, id_proveedor, imagen)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (nombre, codigo, precio_compra, precio_venta, descripcion, presentacion, ubicacion, stock, proveedor, nombre_imagen))
 
         conn.commit()
         conn.close()
         return redirect('/gestionproductos')
 
-    # Si es GET, cargar proveedores
+    # GET
     cursor.execute("SELECT id, empresa FROM proveedores")
     proveedores = cursor.fetchall()
     conn.close()
     return render_template('AgregarProducto.html', proveedores=proveedores)
-
 
 @app.route('/editarproducto/<int:id>', methods=['GET', 'POST'])
 def editarproducto(id):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    print("Método:", request.method)
-
     if request.method == 'POST':
+        # 1. Obtener datos del formulario
         nombre_producto = request.form['nombre_producto']
         precio_compra = float(request.form['precio_compra'])
         cantidad = int(request.form['cantidad'])
@@ -173,38 +178,75 @@ def editarproducto(id):
         presentacion = request.form['presentacion']
         ubicacion = request.form['ubicacion']
         id_proveedor = int(request.form['id_proveedor'])
-        precio_venta = precio_compra * 1.2  # Mismo cálculo de antes
+        precio_venta = round(precio_compra * 1.2, 2)
 
+        # 2. Lógica de imagen (reutilizada aquí)
+        imagen = request.files.get('imagen')
+        if imagen and imagen.filename:
+            nombre_imagen = secure_filename(imagen.filename)
+            ruta_guardado = os.path.join('static/imagen', nombre_imagen)
+            imagen.save(ruta_guardado)
+
+            # Actualizar nombre de la imagen en la base de datos
+            cursor.execute("""
+                UPDATE productos
+                SET imagen = %s
+                WHERE id = %s
+            """, (nombre_imagen, id))
+
+        # 3. Actualizar los demás campos
         cursor.execute("""
             UPDATE productos
-            SET nombre_producto=%s, precio_compra=%s, precio_venta=%s, cantidad=%s,
-                descripcion=%s, codigo=%s, presentacion=%s, ubicacion=%s, id_proveedor=%s
+            SET nombre_producto=%s,
+                precio_compra=%s,
+                precio_venta=%s,
+                cantidad=%s,
+                descripcion=%s,
+                codigo=%s,
+                presentacion=%s,
+                ubicacion=%s,
+                id_proveedor=%s
             WHERE id=%s
-        """, (nombre_producto, precio_compra, precio_venta, cantidad,
-              descripcion, codigo, presentacion, ubicacion, id_proveedor, id))
-        
+        """, (
+            nombre_producto,
+            precio_compra,
+            precio_venta,
+            cantidad,
+            descripcion,
+            codigo,
+            presentacion,
+            ubicacion,
+            id_proveedor,
+            id
+        ))
+
         conn.commit()
         conn.close()
         return redirect('/gestionproductos')
 
-    # GET: mostrar datos en el formulario
+    # GET: cargar datos para mostrar en el formulario
     cursor.execute("SELECT * FROM productos WHERE id = %s", (id,))
     producto = cursor.fetchone()
-    conn.close()
-
     if not producto:
+        conn.close()
         return "Producto no encontrado", 404
 
+    # Calcular precios de venta para mostrar en el formulario
     precio_compra = producto["precio_compra"]
     precio_mayor = precio_compra * Decimal('1.1')
     precio_unidad = precio_compra * Decimal('1.2')
 
-    conn.close()
-    return render_template("EditarProducto.html",
-                           producto=producto,
-                           precio_mayor=precio_mayor,
-                           precio_unidad=precio_unidad)
+    cursor.execute("SELECT id, empresa FROM proveedores")
+    proveedores = cursor.fetchall()
 
+    conn.close()
+    return render_template(
+        "EditarProducto.html",
+        producto=producto,
+        precio_mayor=precio_mayor,
+        precio_unidad=precio_unidad,
+        proveedores=proveedores
+    )
 
 @app.route('/eliminarproducto/<int:id>', methods=['POST'])
 def eliminar_producto(id):
@@ -298,7 +340,6 @@ def eliminarproveedor(id):
 
     return redirect('/gestionproveedores')
 
-
 @app.route('/gestionclientes')
 def gestion_clientes():
     conn = get_connection()
@@ -379,7 +420,6 @@ def eliminarcliente(id):
     cursor.close()
     conn.close()
     return redirect('/gestionclientes')
-
 
 if __name__ == '__main__':
     app.run(debug=True)
