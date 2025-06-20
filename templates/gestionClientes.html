@@ -16,31 +16,35 @@
     }
 
     .encabezado {
-      position: relative;
-      background: #4A90F8;
+      background: linear-gradient(to right, #4A90F8, #7EA6E0);
       color: black;
       width: 100%;
-      height: 80px;
+      height: 100px;
+      padding: 40px;
       display: flex;
+      justify-content: space-between;
       align-items: center;
+      box-sizing: border-box;
     }
 
     .titulo {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 40px;
+      flex: 1;
+      text-align: center;
+      font-size: 50px;
       font-weight: bold;
     }
 
     .btn-atras {
-      margin-left: 30px;
       background: none;
       border: none;
       color: black;
-      font-size: 30px;
+      font-size: 40px;
       font-weight: bold;
       cursor: pointer;
+    }
+
+    .espacio-derecha {
+      width: 300px;
     }
 
     .acciones {
@@ -124,7 +128,8 @@
 
   <div class="encabezado">
     <button onclick="location.href='/admin'" class="btn-atras">← IR ATRÁS</button>
-    <span class="titulo">GESTIONAR CLIENTES</span>
+    <div class="titulo">GESTIONAR CLIENTES</div>
+    <div class="espacio-derecha"></div>
   </div>
 
   <div class="acciones">

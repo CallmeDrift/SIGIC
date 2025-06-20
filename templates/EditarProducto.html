@@ -14,11 +14,11 @@
     }
 
     header {
-      background-color: #4A90F8;
+      background: linear-gradient(to right, #4A90F8, #7EA6E0);
       color: black;
-      padding: 20px;
+      padding: 40px;
       text-align: center;
-      font-size: 35px;
+      font-size: 50px;
       font-weight: bold;
       position: relative;
     }
@@ -29,7 +29,8 @@
       left: 20px;
       background: none;
       border: none;
-      font-size: 30px;
+      padding: 30px;
+      font-size: 40px;
       font-weight: bold;
       color: black;
       cursor: pointer;
@@ -95,6 +96,15 @@
       background: #60d860;
     }
 
+    label {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      margin-top: 10px;
+      display: block;
+    }
+
+
     .form-footer {
       display: flex;
       justify-content: center;
@@ -123,30 +133,43 @@
   <div class="form-wrapper">
     <form id="editar-form" method="POST" enctype="multipart/form-data">
       <div class="form-col">
-        <input type="text" name="nombre_producto" placeholder="NOMBRE PRODUCTO*" required
-          value="{{ producto.nombre_producto }}">
+        <label for="nombre_producto">NOMBRE PRODUCTO*</label>
+        <input type="text" name="nombre_producto" id="nombre_producto" required value="{{ producto.nombre_producto }}">
 
-        <select name="categoria">
-          <option value="">CATEGORIA</option>
+        <label for="categoria">CATEGORÍA</label>
+        <select name="categoria" id="categoria">
+          <option value="">CATEGORÍA</option>
           <option value="lacteos" {% if producto.categoria=='lacteos' %}selected{% endif %}>Lácteos</option>
           <option value="snacks" {% if producto.categoria=='snacks' %}selected{% endif %}>Snacks</option>
           <option value="frutas" {% if producto.categoria=='frutas' %}selected{% endif %}>Frutas</option>
           <option value="aseo" {% if producto.categoria=='aseo' %}selected{% endif %}>Aseo</option>
         </select>
 
-        <input type="number" name="precio_compra" placeholder="VALOR COMPRA*" required
-          value="{{ producto.precio_compra }}">
-        <input type="number" placeholder="VALOR X MAYOR*" disabled value="{{ precio_mayor | round(2) }}">
-        <input type="number" name="cantidad" placeholder="STOCK*" required value="{{ producto.cantidad }}">
-        <textarea name="descripcion" rows="2" placeholder="DESCRIPCIÓN">{{ producto.descripcion }}</textarea>
+        <label for="precio_compra">VALOR COMPRA*</label>
+        <input type="number" name="precio_compra" id="precio_compra" required value="{{ producto.precio_compra }}">
+
+        <label>VALOR X MAYOR*</label>
+        <input type="number" disabled value="{{ precio_mayor | round(2) }}">
+
+        <label for="cantidad">STOCK*</label>
+        <input type="number" name="cantidad" id="cantidad" required value="{{ producto.cantidad }}">
+
+        <label for="descripcion">DESCRIPCIÓN</label>
+        <textarea name="descripcion" id="descripcion" rows="2">{{ producto.descripcion }}</textarea>
       </div>
 
       <div class="form-col">
-        <input type="text" name="codigo" placeholder="CÓDIGO*" required value="{{ producto.codigo }}">
-        <input type="text" name="presentacion" placeholder="PRESENTACIÓN" value="{{ producto.presentacion }}">
-        <input type="number" placeholder="VALOR UNT*" disabled value="{{ precio_unidad | round(2) }}">
+        <label for="codigo">CÓDIGO*</label>
+        <input type="text" name="codigo" id="codigo" required value="{{ producto.codigo }}">
 
-        <select name="id_proveedor" required>
+        <label for="presentacion">PRESENTACIÓN</label>
+        <input type="text" name="presentacion" id="presentacion" value="{{ producto.presentacion }}">
+
+        <label>VALOR UNT*</label>
+        <input type="number" disabled value="{{ precio_unidad | round(2) }}">
+
+        <label for="id_proveedor">SELECCIONA PROVEEDOR</label>
+        <select name="id_proveedor" id="id_proveedor" required>
           <option value="">SELECCIONA PROVEEDOR</option>
           {% for proveedor in proveedores %}
           <option value="{{ proveedor.id }}" {% if proveedor.id==producto.id_proveedor %}selected{% endif %}>
@@ -155,20 +178,21 @@
           {% endfor %}
         </select>
 
-        <input type="text" name="ubicacion" placeholder="UBICACIÓN" value="{{ producto.ubicacion }}">
+        <label for="ubicacion">UBICACIÓN</label>
+        <input type="text" name="ubicacion" id="ubicacion" value="{{ producto.ubicacion }}">
 
-        <!-- Subir nueva imagen -->
-        <input type="file" name="imagen" accept="image/*">
+        <label for="imagen">CAMBIAR IMAGEN</label>
+        <input type="file" name="imagen" id="imagen" accept="image/*">
 
-        <!-- Imagen actual abajo -->
+        {% if producto.imagen %}
         <div class="imagen-actual">
-          {% if producto.imagen %}
           <p>Imagen actual:</p>
           <img src="{{ url_for('static', filename='imagen/' + producto.imagen) }}" alt="Imagen actual" width="150">
-          {% endif %}
         </div>
+        {% endif %}
       </div>
     </form>
+
 
     <!-- Botón centrado fuera del formulario -->
     <div class="form-footer">

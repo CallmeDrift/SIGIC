@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Ayuda - SIGIC</title>
@@ -17,13 +18,13 @@
     }
 
     .encabezado {
-      background: linear-gradient(to right, #4A90F8, #7EA6E0); 
+      background: linear-gradient(to right, #4A90F8, #7EA6E0);
       color: black;
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 30px;
+      padding: 40px;
       font-size: 50px;
       font-weight: bold;
       flex-shrink: 0;
@@ -33,9 +34,13 @@
       background: none;
       border: none;
       color: black;
-      font-size: 30px;
+      font-size: 40px;
       font-weight: bold;
       cursor: pointer;
+    }
+
+    .espacio-derecha {
+      width: 200px;
     }
 
     .contenido {
@@ -52,15 +57,16 @@
       max-width: 90%;
       height: auto;
       border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
   </style>
 </head>
+
 <body>
   <div class="encabezado">
     <button onclick="location.href='/main'" class="btn-atras">← IR ATRÁS</button>
     <span>AYUDA</span>
-    <span></span>
+    <span class="espacio-derecha"></span>
   </div>
 
   <div class="contenido">
@@ -70,4 +76,5 @@
     </video>
   </div>
 </body>
+
 </html>

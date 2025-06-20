@@ -17,10 +17,11 @@
 
     .encabezado {
       position: relative;
-      background-color: #4A90F8;
+      background: linear-gradient(to right, #4A90F8, #7EA6E0);
       color: black;
       width: 100%;
       height: 80px;
+      padding: 40px;
       display: flex;
       align-items: center;
     }
@@ -29,7 +30,7 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 40px;
+      font-size: 50px;
       font-weight: bold;
     }
 
@@ -38,7 +39,7 @@
       background: none;
       border: none;
       color: black;
-      font-size: 30px;
+      font-size: 40px;
       font-weight: bold;
       cursor: pointer;
     }
@@ -53,21 +54,41 @@
 
     .form-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
-      width: 80%;
       max-width: 800px;
-      margin-bottom: 30px;
+      margin: auto;
     }
 
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      font-size: 30px;
+      margin-bottom: 5px;
+    }
+
+    .form-group input {
+      padding: 10px;
+      font-size: 40px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+
     input {
-      font-size: 20px;
+      font-size: 40px;
       padding: 15px 20px;
       border-radius: 10px;
       border: none;
       background-color: #d9d9d9;
       font-weight: bold;
       color: gray;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .submit-btn {
@@ -75,9 +96,18 @@
       border: none;
       border-radius: 20px;
       padding: 10px 25px;
-      font-size: 25px;
+      font-size: 40px;
       font-weight: bold;
       cursor: pointer;
+      margin-top: 40px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 18px;
+      text-align: left;
     }
   </style>
 </head>
@@ -87,19 +117,37 @@
     <button onclick="location.href='/gestionproveedores'" class="btn-atras">← IR ATRÁS</button>
     <span class="titulo">EDITAR PROVEEDORES</span>
   </div>
-
   <form method="POST">
     <div class="form-grid">
-      <input type="text" name="nombre" placeholder="NOMBRES" required value="{{ proveedor['nombre'] }}">
-      <input type="text" name="empresa" placeholder="EMPRESA" required value="{{ proveedor['empresa'] }}">
-      <input type="text" name="contacto" placeholder="TELÉFONO / CORREO" required value="{{ proveedor['contacto'] }}">
-      <input type="email" placeholder="CORREO ELECTRÓNICO" disabled value="(no solicitado)">
-      <input type="text" placeholder="APELLIDOS" disabled value="(no solicitado)">
-      <input type="tel" placeholder="TELÉFONO 2" disabled value="(no solicitado)">
+      <div class="form-group">
+        <label for="nombre">NOMBRES</label>
+        <input type="text" name="nombre" id="nombre" required value="{{ proveedor['nombre'] }}">
+      </div>
+      <div class="form-group">
+        <label for="empresa">EMPRESA</label>
+        <input type="text" name="empresa" id="empresa" required value="{{ proveedor['empresa'] }}">
+      </div>
+      <div class="form-group">
+        <label for="contacto">TELÉFONO / CORREO</label>
+        <input type="text" name="contacto" id="contacto" required value="{{ proveedor['contacto'] }}">
+      </div>
+      <div class="form-group">
+        <label for="correo">CORREO ELECTRÓNICO</label>
+        <input type="email" id="correo" disabled value="(no solicitado)">
+      </div>
+      <div class="form-group">
+        <label for="apellidos">APELLIDOS</label>
+        <input type="text" id="apellidos" disabled value="(no solicitado)">
+      </div>
+      <div class="form-group">
+        <label for="telefono2">TELÉFONO 2</label>
+        <input type="tel" id="telefono2" disabled value="(no solicitado)">
+      </div>
     </div>
 
     <button type="submit" class="submit-btn">EDITAR PROVEEDOR</button>
   </form>
+
 </body>
 
 </html>
