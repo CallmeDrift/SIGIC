@@ -83,7 +83,7 @@
 
         th,
         td {
-            padding:  15px 20px 15px 10px;
+            padding: 15px 20px 15px 10px;
             border-bottom: 1px solid #000;
             text-align: left;
         }
@@ -130,6 +130,19 @@
             background-color: #ffcccc;
             /* rojo clarito */
         }
+
+        .marca-de-agua {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            font-size: 500px;
+            font-weight: bold;
+            color: #000000;
+            opacity: 3%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            user-select: none;
+        }
     </style>
 </head>
 
@@ -144,12 +157,14 @@
         <button onclick="location.href='/agregarproducto'" class="agregar-btn">AGREGAR PRODUCTO</button>
         <input type="text" placeholder="🔍BUSCAR PRODUCTO" class="buscar-input">
     </div>
-
+    <div class="marca-de-agua">SIGIC</div>
     <table>
         <thead>
             <tr>
                 <th>NOMBRE</th>
-                <th>VALOR</th>
+                <th>CODIGO</th>
+                <th>VALOR (+20%)</th>
+                <th>VALOR (+10%)</th>
                 <th>STOCK</th>
                 <th></th>
             </tr>
@@ -159,7 +174,9 @@
             <tr data-nombre="{{ producto.nombre_producto }}" data-codigo="{{ producto.codigo }}"
                 class="{% if producto.cantidad < 5 %}peligro-stock{% endif %}">
                 <td>{{ producto.nombre_producto }}</td>
-                <td>${{ producto.precio_venta }}</td>
+                <td>{{ producto.codigo }}</td>
+                <td>${{ producto.precio_unidad|int }}</td>
+                <td>${{ producto.precio_mayor|int }}</td>
                 <td>{{ producto.cantidad }} uni</td>
                 <td class="acciones-producto">
                     <button class="editar-btn"

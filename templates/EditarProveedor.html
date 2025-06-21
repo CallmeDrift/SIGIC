@@ -109,6 +109,19 @@
       font-size: 18px;
       text-align: left;
     }
+
+    .marca-de-agua {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      font-size: 500px;
+      font-weight: bold;
+      color: #000000;
+      opacity: 3%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+    }
   </style>
 </head>
 
@@ -116,6 +129,7 @@
   <div class="encabezado">
     <button onclick="location.href='/gestionproveedores'" class="btn-atras">← IR ATRÁS</button>
     <span class="titulo">EDITAR PROVEEDORES</span>
+    <div class="marca-de-agua">SIGIC</div>
   </div>
   <form method="POST">
     <div class="form-grid">

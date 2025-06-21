@@ -96,6 +96,19 @@
     .submit-btn:hover {
       background: #60d860;
     }
+
+    .marca-de-agua {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      font-size: 500px;
+      font-weight: bold;
+      color: #000000;
+      opacity: 3%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+    }
   </style>
 </head>
 
@@ -104,19 +117,33 @@
     <button class="btn-atras" onclick="location.href='/gestionproductos'">← IR ATRÁS</button>
     AGREGAR PRODUCTO
   </header>
-
+  <div class="marca-de-agua">SIGIC</div>
   <div class="form-wrapper">
     <form method="POST" action="/agregarproducto" enctype="multipart/form-data">
       <div class="form-col">
         <input type="text" name="nombre_producto" placeholder="NOMBRE PRODUCTO*" required>
 
-        <!-- La categoría por ahora no se guarda -->
         <select name="categoria">
           <option value="">CATEGORIA</option>
-          <option value="lacteos">Lácteos</option>
-          <option value="snacks">Snacks</option>
-          <option value="frutas">Frutas</option>
-          <option value="aseo">Aseo</option>
+          <option value="Frutas y verduras">Frutas</option>
+          <option value="Lacteos">Lácteos</option>
+          <option value="Licores">Licores</option> 
+          <option value="Abarrotes">Abarrotes</option>         
+          <option value="Aseo Personal">Aseo</option>
+          <option value="Salsamentaria">Salsamentaria</option>
+          <option value="Enlatados">Enlatados</option>
+          <option value="Desechables">Desechable</option>  
+          <option value="Confiteria">Confiteria</option>
+          <option value="Limpieza del Hogar">Hogar</option>
+          <option value="Granos y Cerales">Granos</option>
+          <option value="Pastas y Harinas">Harinas</option>
+          <option value="Aceites y Margarinas">Aceites</option>
+          <option value="Bebidas">Bebidas</option>
+          <option value="Condimentos y Especias">Condimentos</option>
+          <option value="Mascotas">Mascotas</option>
+          <option value="Medicamentos">Medicamentos</option>
+          <option value="Carnes">Carnes</option>
+          <option value="Congelados">Congelados</option>
         </select>
 
         <input type="number" name="precio_compra" placeholder="VALOR COMPRA*" required>
@@ -132,7 +159,7 @@
         <select name="id_proveedor" required>
           <option value="">SELECCIONA PROVEEDOR</option>
           {% for proveedor in proveedores %}
-            <option value="{{ proveedor.id }}">{{ proveedor.empresa }}</option>
+          <option value="{{ proveedor.id }}">{{ proveedor.empresa }}</option>
           {% endfor %}
         </select>
 
@@ -144,4 +171,5 @@
     </form>
   </div>
 </body>
+
 </html>

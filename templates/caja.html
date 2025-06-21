@@ -175,39 +175,52 @@
       z-index: 1000;
     }
 
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
     .modal-contenido {
       background: white;
-      padding: 40px 50px;
+      padding: 60px 75px;
       border-radius: 25px;
       text-align: center;
-      width: 600px;
+      width: 900px;
       max-width: 90%;
+      animation: zoomIn 0.3s ease;
     }
 
     .modal-titulo {
-      font-size: 35px;
-      margin-bottom: 30px;
+      font-size: 52px;
+      margin-bottom: 45px;
     }
 
     .modal-select,
     .modal-input {
-      font-size: 24px;
-      padding: 15px;
-      margin-bottom: 20px;
+      font-size: 35px;
+      padding: 22px;
+      margin-bottom: 30px;
       width: 80%;
       max-width: 100%;
     }
 
     .modal-cambio {
-      font-size: 24px;
-      margin-bottom: 20px;
+      font-size: 50px;
+      margin-bottom: 30px;
       font-weight: bold;
     }
 
     .modal-btn {
-      font-size: 22px;
-      padding: 12px 24px;
-      margin: 5px;
+      font-size: 33px;
+      padding: 18px 36px;
+      margin: 8px;
       border: none;
       border-radius: 12px;
       cursor: pointer;
@@ -222,6 +235,28 @@
       background-color: gray;
       color: white;
     }
+
+    .marca-de-agua {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 500px;
+      font-weight: bold;
+      color: #000000;
+      opacity: 3%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .peligro-stock {
+      background-color: #ffe5e5;
+    }
+
+    .peligro-stock td {
+      color: #d40000;
+      font-weight: bold;
+    }
   </style>
 </head>
 
@@ -233,6 +268,7 @@
   </div>
 
   <div class="contenido">
+    <div class="marca-de-agua">SIGIC</div>
     <div class="instruccion">INGRESE EL CÓDIGO O NOMBRE DEL PRODUCTO</div>
 
     <!-- WRAPPER con position relative -->
@@ -249,6 +285,7 @@
           <th>VALOR X UND/LB</th>
           <th>CANTIDAD</th>
           <th>VALOR TOTAL</th>
+          <th>STOCK ACTUAL</th>
         </tr>
       </thead>
       <tbody id="tablaProductos">
@@ -273,7 +310,7 @@
           {% endfor %}
         </select>
         <input type="hidden" id="productosData" name="productos">
-        <input type="number" id="pagoCliente" placeholder="Ingrese el valor pagado" required class="modal-input"
+        <input type="number" id="pagoCliente" placeholder="Ingrese el dinero recibido" required class="modal-input"
           oninput="calcularCambio()">
         <div id="cambioTexto" class="modal-cambio">Cambio: $0</div>
         <button type="submit" class="modal-btn confirmar">Confirmar</button>
@@ -300,7 +337,7 @@
           });
         });
     }
-    //------------------------------------------------------------------
+
     function agregarProducto(producto) {
       const tabla = document.getElementById('tablaProductos');
       const existente = productosSeleccionados.find(p => p.id === producto.id);
@@ -320,7 +357,6 @@
       document.getElementById('inputBusqueda').value = '';
       document.getElementById('sugerencias').innerHTML = '';
     }
-    //------------------------------------------------------------------
 
     function renderTabla() {
       const tbody = document.getElementById('tablaProductos');
@@ -329,6 +365,9 @@
 
       productosSeleccionados.forEach((prod, index) => {
         const fila = document.createElement('tr');
+        if (prod.cantidad_disponible < 5) {
+          fila.classList.add('peligro-stock');
+        }
         fila.innerHTML = `
           <td>${prod.nombre_producto}</td>
           <td>$${prod.precio_venta.toFixed(2)}</td>
@@ -338,6 +377,7 @@
             <button class="control-btn" onclick="sumarCantidad(${index})">+</button>
           </td>
           <td>$${prod.total.toFixed(2)}</td>
+          <td>${prod.cantidad_disponible}</td>
         `;
         tbody.appendChild(fila);
         totalGeneral += prod.total;
@@ -399,6 +439,7 @@
     function enviarCompra() {
       const productosInput = document.getElementById('productosData');
       productosInput.value = JSON.stringify(productosSeleccionados);
+      alert("✅ Compra realizada con éxito");
       return true;
     }
   </script>

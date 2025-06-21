@@ -119,6 +119,11 @@ def gestionproductos():
     cursor = conn.cursor(dictionary=True)
     cursor.execute("SELECT * FROM productos")
     productos = cursor.fetchall()
+
+    for producto in productos:
+        producto['precio_mayor'] = round(Decimal(producto['precio_compra']) * Decimal('1.1'))
+        producto['precio_unidad'] = round(Decimal(producto['precio_venta'])) 
+
     conn.close()
     return render_template('gestionproductos.html', productos=productos)
 
@@ -137,6 +142,7 @@ def agregarproducto():
         ubicacion = request.form.get('ubicacion', '')
         stock = int(request.form['cantidad'])
         proveedor = request.form.get('id_proveedor')
+        categoria = request.form.get('categoria')
 
         imagen = request.files.get('imagen')
         nombre_imagen = ''
@@ -149,9 +155,9 @@ def agregarproducto():
         # Insertar en la DB
         cursor.execute("""
             INSERT INTO productos 
-            (nombre_producto, codigo, precio_compra, precio_venta, descripcion, presentacion, ubicacion, cantidad, id_proveedor, imagen)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (nombre, codigo, precio_compra, precio_venta, descripcion, presentacion, ubicacion, stock, proveedor, nombre_imagen))
+            (nombre_producto, codigo, precio_compra, precio_venta, descripcion, presentacion, ubicacion, cantidad, id_proveedor, imagen, categoria)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (nombre, codigo, precio_compra, precio_venta, descripcion, presentacion, ubicacion, stock, proveedor, nombre_imagen, categoria))
 
         conn.commit()
         conn.close()
@@ -168,6 +174,14 @@ def editarproducto(id):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
+    # Definir la lista de categorías UNA VEZ al inicio
+    categorias = [
+        "Frutas y verduras", "Lacteos", "Licores", "Abarrotes", "Aseo Personal",
+        "Salsamentaria", "Enlatados", "Desechables", "Confiteria", "Limpieza del Hogar",
+        "Granos y Cerales", "Pastas y Harinas", "Aceites y Margarinas", "Bebidas",
+        "Condimentos y Especias", "Mascotas", "Medicamentos", "Carnes", "Congelados"
+    ]
+
     if request.method == 'POST':
         # 1. Obtener datos del formulario
         nombre_producto = request.form['nombre_producto']
@@ -178,23 +192,23 @@ def editarproducto(id):
         presentacion = request.form['presentacion']
         ubicacion = request.form['ubicacion']
         id_proveedor = int(request.form['id_proveedor'])
+        categoria = request.form.get('categoria')  # ¡No olvides guardar esto!
         precio_venta = round(precio_compra * 1.2, 2)
 
-        # 2. Lógica de imagen (reutilizada aquí)
+        # 2. Lógica de imagen
         imagen = request.files.get('imagen')
         if imagen and imagen.filename:
             nombre_imagen = secure_filename(imagen.filename)
             ruta_guardado = os.path.join('static/imagen', nombre_imagen)
             imagen.save(ruta_guardado)
 
-            # Actualizar nombre de la imagen en la base de datos
             cursor.execute("""
                 UPDATE productos
                 SET imagen = %s
                 WHERE id = %s
             """, (nombre_imagen, id))
 
-        # 3. Actualizar los demás campos
+        # 3. Actualizar el resto de campos (incluye categoría ahora)
         cursor.execute("""
             UPDATE productos
             SET nombre_producto=%s,
@@ -205,7 +219,8 @@ def editarproducto(id):
                 codigo=%s,
                 presentacion=%s,
                 ubicacion=%s,
-                id_proveedor=%s
+                id_proveedor=%s,
+                categoria=%s
             WHERE id=%s
         """, (
             nombre_producto,
@@ -217,6 +232,7 @@ def editarproducto(id):
             presentacion,
             ubicacion,
             id_proveedor,
+            categoria,
             id
         ))
 
@@ -224,14 +240,13 @@ def editarproducto(id):
         conn.close()
         return redirect('/gestionproductos')
 
-    # GET: cargar datos para mostrar en el formulario
+    # GET
     cursor.execute("SELECT * FROM productos WHERE id = %s", (id,))
     producto = cursor.fetchone()
     if not producto:
         conn.close()
         return "Producto no encontrado", 404
 
-    # Calcular precios de venta para mostrar en el formulario
     precio_compra = producto["precio_compra"]
     precio_mayor = precio_compra * Decimal('1.1')
     precio_unidad = precio_compra * Decimal('1.2')
@@ -245,7 +260,8 @@ def editarproducto(id):
         producto=producto,
         precio_mayor=precio_mayor,
         precio_unidad=precio_unidad,
-        proveedores=proveedores
+        proveedores=proveedores,
+        categorias=categorias
     )
 
 @app.route('/eliminarproducto/<int:id>', methods=['POST'])

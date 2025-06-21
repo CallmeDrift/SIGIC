@@ -36,6 +36,10 @@
       cursor: pointer;
     }
 
+    .btn-atras:hover {
+      color: #686868;
+    }
+
     .form-wrapper {
       width: 100%;
       display: flex;
@@ -121,6 +125,19 @@
       max-width: 100%;
       height: auto;
     }
+
+    .marca-de-agua {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      font-size: 500px;
+      font-weight: bold;
+      color: #000000;
+      opacity: 3%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+    }
   </style>
 </head>
 
@@ -129,7 +146,7 @@
     <button class="btn-atras" onclick="location.href='/gestionproductos'">← IR ATRÁS</button>
     EDITAR PRODUCTO
   </header>
-
+  <div class="marca-de-agua">SIGIC</div>
   <div class="form-wrapper">
     <form id="editar-form" method="POST" enctype="multipart/form-data">
       <div class="form-col">
@@ -137,18 +154,16 @@
         <input type="text" name="nombre_producto" id="nombre_producto" required value="{{ producto.nombre_producto }}">
 
         <label for="categoria">CATEGORÍA</label>
-        <select name="categoria" id="categoria">
+        <select name="categoria" id="categoria" required>
           <option value="">CATEGORÍA</option>
-          <option value="lacteos" {% if producto.categoria=='lacteos' %}selected{% endif %}>Lácteos</option>
-          <option value="snacks" {% if producto.categoria=='snacks' %}selected{% endif %}>Snacks</option>
-          <option value="frutas" {% if producto.categoria=='frutas' %}selected{% endif %}>Frutas</option>
-          <option value="aseo" {% if producto.categoria=='aseo' %}selected{% endif %}>Aseo</option>
+          {% for cat in categorias %}
+          <option value="{{ cat }}" {% if producto.categoria==cat %}selected{% endif %}>{{ cat }}</option>
+          {% endfor %}
         </select>
 
         <label for="precio_compra">VALOR COMPRA*</label>
         <input type="number" name="precio_compra" id="precio_compra" required value="{{ producto.precio_compra }}">
-
-        <label>VALOR X MAYOR*</label>
+        <label>VALOR X MAYOR (10%)*</label>
         <input type="number" disabled value="{{ precio_mayor | round(2) }}">
 
         <label for="cantidad">STOCK*</label>
@@ -165,7 +180,7 @@
         <label for="presentacion">PRESENTACIÓN</label>
         <input type="text" name="presentacion" id="presentacion" value="{{ producto.presentacion }}">
 
-        <label>VALOR UNT*</label>
+        <label>VALOR UNT(20%)*</label>
         <input type="number" disabled value="{{ precio_unidad | round(2) }}">
 
         <label for="id_proveedor">SELECCIONA PROVEEDOR</label>
@@ -192,9 +207,6 @@
         {% endif %}
       </div>
     </form>
-
-
-    <!-- Botón centrado fuera del formulario -->
     <div class="form-footer">
       <button class="submit-btn" type="submit" form="editar-form">EDITAR PRODUCTO</button>
     </div>

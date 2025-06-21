@@ -121,6 +121,19 @@
       font-weight: bold;
       cursor: pointer;
     }
+
+    .marca-de-agua {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      font-size: 500px;
+      font-weight: bold;
+      color: #000000;
+      opacity: 3%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+    }
   </style>
 </head>
 
@@ -131,6 +144,8 @@
     <div class="titulo">GESTIONAR CLIENTES</div>
     <div class="espacio-derecha"></div>
   </div>
+
+  <div class="marca-de-agua">SIGIC</div>
 
   <div class="acciones">
     <button onclick="location.href='/agregarcliente'" class="agregar-btn">AGREGAR CLIENTE</button>

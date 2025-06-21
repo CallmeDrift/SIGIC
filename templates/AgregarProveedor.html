@@ -54,23 +54,23 @@
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
       gap: 30px;
-      width: 80%;
-      max-width: 800px;
+      width: 100%;
+      max-width: 1000px;
       margin-bottom: 30px;
     }
 
     input {
-      font-size: 30px;
+      font-size: 40px;
       padding: 15px 20px;
       border-radius: 10px;
       border: none;
       background-color: #d9d9d9;
       font-weight: bold;
       color: gray;
-      width: 100%;
       box-sizing: border-box;
+      width: 100%;
     }
 
     .submit-btn {
@@ -78,9 +78,23 @@
       border: none;
       border-radius: 20px;
       padding: 10px 25px;
-      font-size: 30px;
+      font-size: 40px;
       font-weight: bold;
       cursor: pointer;
+      margin-top: 40px;
+    }
+
+    .marca-de-agua {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      font-size: 500px;
+      font-weight: bold;
+      color: #000000;
+      opacity: 3%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
     }
   </style>
 </head>
@@ -89,8 +103,10 @@
   <div class="encabezado">
     <button onclick="location.href='/gestionproveedores'" class="btn-atras">← IR ATRÁS</button>
     <span class="titulo">AGREGAR PROVEEDORES</span>
+    <div class="marca-de-agua">SIGIC</div>
   </div>
 
+  
   <form method="POST" action="/agregarproveedor">
     <div class="form-grid">
       <input type="text" name="nombre" placeholder="NOMBRES" required>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Login Admin</title>
@@ -47,6 +48,7 @@
       border-radius: 20px;
       box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.1);
       margin-top: 80px;
+      opacity: 100%;
     }
 
     .login-box h1 {
@@ -100,15 +102,30 @@
       height: 25px;
       cursor: pointer;
     }
+
+    .marca-de-agua {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 500px;
+      font-weight: bold;
+      color: #000000;
+      opacity: 2.5%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+    }
   </style>
 </head>
+
 <body>
   <header>ACCESO ADMINISTRADOR</header>
 
   <div class="ir-atras" onclick="location.href='/'">← IR ATRÁS</div>
-
+  <div class="marca-de-agua">SIGIC</div>
   {% if error %}
-  <div style="background-color: #ffcccc; color: #990000; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; font-size: 25px; margin-top: 20px;">
+  <div
+    style="background-color: #ffcccc; color: #990000; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; font-size: 25px; margin-top: 20px;">
     {{ error }}
   </div>
   {% endif %}
@@ -119,9 +136,7 @@
 
     <div class="password-wrapper">
       <input type="password" name="contraseña" id="passwordInput" placeholder="🔒 CONTRASEÑA" required>
-      <img src="{{ url_for('static', filename='imagen/hide.png') }}" 
-           id="toggleEye"
-           onclick="togglePassword()">
+      <img src="{{ url_for('static', filename='imagen/hide.png') }}" id="toggleEye" onclick="togglePassword()">
     </div>
 
     <button type="submit">INGRESAR</button>
@@ -142,4 +157,5 @@
     }
   </script>
 </body>
+
 </html>
