@@ -293,7 +293,6 @@
       </tbody>
     </table>
   </div>
-
   <div class="total-section">
     <span id="totalGeneral">TOTAL: $0</span>
     <button class="confirmar" onclick="mostrarModal()">CONFIRMAR COMPRA</button>
@@ -304,6 +303,7 @@
     <div class="modal-contenido">
       <h2 class="modal-titulo">Seleccione el cliente</h2>
       <form action="/caja" method="POST" onsubmit="return enviarCompra()">
+        <input type="text" id="buscadorCliente" class="modal-input" placeholder="Buscar cliente por nombre/apellido">
         <select id="clienteSelect" name="cliente_id" required class="modal-select">
           {% for cliente in clientes %}
           <option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
@@ -442,6 +442,26 @@
       alert("✅ Compra realizada con éxito");
       return true;
     }
+
+    document.getElementById('buscadorCliente').addEventListener('input', function () {
+      const filtro = this.value.toLowerCase();
+      const opciones = document.getElementById('clienteSelect').options;
+
+      for (let i = 0; i < opciones.length; i++) {
+        const texto = opciones[i].text.toLowerCase();
+        opciones[i].style.display = texto.includes(filtro) ? '' : 'none';
+      }
+    });
+
+    document.getElementById('buscadorCliente').addEventListener('input', function () {
+      const filtro = this.value.toLowerCase();
+      const opciones = document.getElementById('clienteSelect').options;
+
+      for (let i = 0; i < opciones.length; i++) {
+        const texto = opciones[i].text.toLowerCase();
+        opciones[i].style.display = texto.includes(filtro) ? '' : 'none';
+      }
+    });
   </script>
 </body>
 
